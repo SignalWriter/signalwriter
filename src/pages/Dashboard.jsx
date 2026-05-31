@@ -96,7 +96,7 @@ export default function Dashboard() {
         className="mb-10"
       >
         <h1 className="font-display text-3xl md:text-4xl text-foreground mb-2">Dashboard</h1>
-        <p className="text-sm text-muted-foreground">Your continuity workspace. Discoveries preserved.</p>
+        <p className="text-sm text-muted-foreground">Your continuity workspace. Remember what mattered.</p>
       </motion.div>
 
       {isEmpty ? (
