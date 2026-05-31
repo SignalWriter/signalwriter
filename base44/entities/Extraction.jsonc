@@ -1,0 +1,127 @@
+{
+  "name": "Extraction",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Auto-generated title for the extraction"
+    },
+    "source_text": {
+      "type": "string",
+      "description": "Original pasted content"
+    },
+    "source_type": {
+      "type": "string",
+      "enum": [
+        "conversation",
+        "transcript",
+        "note",
+        "article",
+        "journal",
+        "thought_dump",
+        "other"
+      ],
+      "default": "other"
+    },
+    "core_insight": {
+      "type": "string",
+      "description": "The central insight extracted"
+    },
+    "thought_seeds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "context": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "framework_seeds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "story_seeds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "premise": {
+            "type": "string"
+          },
+          "elements": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "project_implications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "idea": {
+            "type": "string"
+          },
+          "domain": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "quotable_lines": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "emerging_patterns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "open_loops": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string"
+          },
+          "context": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "suggested_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mira_note": {
+      "type": "string",
+      "description": "MIRA's observation about this extraction"
+    }
+  },
+  "required": [
+    "title",
+    "source_text"
+  ]
+}

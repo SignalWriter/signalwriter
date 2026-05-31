@@ -1,0 +1,65 @@
+{
+  "name": "Penfire",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the penfire"
+    },
+    "description": {
+      "type": "string",
+      "description": "What this recurring theme represents"
+    },
+    "first_appearance": {
+      "type": "string",
+      "format": "date",
+      "description": "When this was first detected"
+    },
+    "latest_appearance": {
+      "type": "string",
+      "format": "date",
+      "description": "Most recent occurrence"
+    },
+    "occurrence_count": {
+      "type": "number",
+      "default": 1
+    },
+    "related_extraction_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "related_insights": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "related_seeds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "emerging",
+        "confirmed",
+        "evolved"
+      ],
+      "default": "emerging"
+    }
+  },
+  "required": [
+    "name",
+    "description"
+  ]
+}
