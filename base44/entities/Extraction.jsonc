@@ -23,6 +23,31 @@
       ],
       "default": "other"
     },
+    "source_platform": {
+      "type": "string",
+      "enum": [
+        "ChatGPT",
+        "Claude",
+        "Gemini",
+        "Grok",
+        "Manual Entry",
+        "Other"
+      ],
+      "description": "Platform where the source originated"
+    },
+    "source_thread_title": {
+      "type": "string",
+      "description": "Title of the original thread or document"
+    },
+    "source_original_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Original creation date of the source content"
+    },
+    "source_link": {
+      "type": "string",
+      "description": "Optional URL link to the original source"
+    },
     "core_insight": {
       "type": "string",
       "description": "The central insight extracted"

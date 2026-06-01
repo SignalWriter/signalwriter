@@ -6,14 +6,28 @@ export function formatExtractionAsText(extraction, penfires = []) {
   lines.push("SIGNALWRITER EXTRACTION");
   lines.push("════════════════════════════════════════");
   lines.push("");
-  lines.push(`Title:      ${extraction.title}`);
-  lines.push(`Date:       ${new Date(extraction.created_date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}`);
-  if (extraction.source_type) {
-    lines.push(`Source:     ${extraction.source_type.replace(/_/g, " ")}`);
+  lines.push(`Title:         ${extraction.title}`);
+  if (extraction.source_platform) {
+    lines.push(`Source:        ${extraction.source_platform}`);
+  }
+  if (extraction.source_thread_title) {
+    lines.push(`Thread:        "${extraction.source_thread_title}"`);
+  }
+  if (extraction.source_original_date) {
+    lines.push(`Original Date: ${new Date(extraction.source_original_date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}`);
+  }
+  if (extraction.created_date) {
+    lines.push(`Extracted:     ${new Date(extraction.created_date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}`);
   }
   if (extraction.source_text) {
-    const wordCount = extraction.source_text.trim().split(/\s+/).length;
-    lines.push(`Word Count: ${wordCount.toLocaleString()} words (source)`);
+    const wordCount = extraction.source_text.trim().split(/\s+/).filter(Boolean).length;
+    lines.push(`Word Count:    ${wordCount.toLocaleString()} words`);
+  }
+  if (extraction.source_type) {
+    lines.push(`Source Type:   ${extraction.source_type.replace(/_/g, " ")}`);
+  }
+  if (extraction.source_link) {
+    lines.push(`Link:          ${extraction.source_link}`);
   }
   lines.push("");
 

@@ -4,6 +4,7 @@ import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Loader2, Sparkles, PenTool } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,9 +22,17 @@ const SOURCE_TYPES = [
   { value: "other", label: "Other" },
 ];
 
+const PLATFORMS = [
+  "ChatGPT", "Claude", "Gemini", "Grok", "Manual Entry", "Other"
+];
+
 export default function Extract() {
   const [sourceText, setSourceText] = useState("");
   const [sourceType, setSourceType] = useState("other");
+  const [sourcePlatform, setSourcePlatform] = useState("");
+  const [threadTitle, setThreadTitle] = useState("");
+  const [originalDate, setOriginalDate] = useState("");
+  const [sourceLink, setSourceLink] = useState("");
   const [extractedData, setExtractedData] = useState(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -110,6 +119,10 @@ Be selective. Only extract what truly has signal. Empty arrays are better than n
         title: extractedData.title,
         source_text: sourceText,
         source_type: sourceType,
+        source_platform: sourcePlatform || undefined,
+        source_thread_title: threadTitle || undefined,
+        source_original_date: originalDate || undefined,
+        source_link: sourceLink || undefined,
         core_insight: extractedData.core_insight,
         thought_seeds: extractedData.thought_seeds,
         framework_seeds: extractedData.framework_seeds,
@@ -158,18 +171,50 @@ Be selective. Only extract what truly has signal. Empty arrays are better than n
             exit={{ opacity: 0, y: -20 }}
             className="space-y-5"
           >
-            <div className="flex items-center gap-3">
-              <Select value={sourceType} onValueChange={setSourceType}>
-                <SelectTrigger className="w-48 bg-card/50">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {SOURCE_TYPES.map(t => (
-                    <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <span className="text-xs text-muted-foreground">Source type</span>
+            <div className="space-y-3">
+              <div className="flex flex-wrap items-center gap-3">
+                <Select value={sourceType} onValueChange={setSourceType}>
+                  <SelectTrigger className="w-44 bg-card/50">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {SOURCE_TYPES.map(t => (
+                      <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Select value={sourcePlatform} onValueChange={setSourcePlatform}>
+                  <SelectTrigger className="w-44 bg-card/50">
+                    <SelectValue placeholder="Platform (optional)" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {PLATFORMS.map(p => (
+                      <SelectItem key={p} value={p}>{p}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <Input
+                  value={threadTitle}
+                  onChange={(e) => setThreadTitle(e.target.value)}
+                  placeholder="Thread title (optional)"
+                  className="flex-1 min-w-[200px] bg-card/50 border-border/50 text-sm"
+                />
+                <Input
+                  type="date"
+                  value={originalDate}
+                  onChange={(e) => setOriginalDate(e.target.value)}
+                  className="w-44 bg-card/50 border-border/50 text-sm"
+                  title="Original date (optional)"
+                />
+                <Input
+                  value={sourceLink}
+                  onChange={(e) => setSourceLink(e.target.value)}
+                  placeholder="Source link (optional)"
+                  className="flex-1 min-w-[200px] bg-card/50 border-border/50 text-sm"
+                />
+              </div>
             </div>
 
             <Textarea

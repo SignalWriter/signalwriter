@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { motion } from "framer-motion";
 import ArtifactCard from "@/components/extraction/ArtifactCard";
 import MiraNote from "@/components/extraction/MiraNote";
+import SourceMetadata from "@/components/extraction/SourceMetadata";
 import TagBadge from "@/components/shared/TagBadge";
 import CopyExtractionButton from "@/components/shared/CopyExtractionButton";
 
@@ -75,6 +76,8 @@ export default function ExtractionDetail() {
         </div>
 
         <h1 className="font-display text-3xl text-foreground mb-6">{extraction.title}</h1>
+
+        <SourceMetadata extraction={extraction} />
 
         {extraction.core_insight && (
           <ArtifactCard type="insight" content={extraction.core_insight} index={0} />
