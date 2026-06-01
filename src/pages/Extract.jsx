@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, Sparkles, PenTool } from "lucide-react";
+import { Loader2, Sparkles, PenTool, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ArtifactCard from "@/components/extraction/ArtifactCard";
 import MiraNote from "@/components/extraction/MiraNote";
@@ -36,6 +36,7 @@ export default function Extract() {
   const [originalDate, setOriginalDate] = useState("");
   const [userAlias, setUserAlias] = useState("");
   const [sourceLink, setSourceLink] = useState("");
+  const [showSourceInfo, setShowSourceInfo] = useState(false);
   const [extractedData, setExtractedData] = useState(null);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -185,7 +186,8 @@ Be selective. Only extract what truly has signal. Empty arrays are better than n
             exit={{ opacity: 0, y: -20 }}
             className="space-y-5"
           >
-            <div className="space-y-3">
+            <div className="space-y-4">
+              {/* Required: Source Type + Platform */}
               <div className="flex flex-wrap items-center gap-3">
                 <Select value={sourceType} onValueChange={setSourceType}>
                   <SelectTrigger className="w-44 bg-card/50">
@@ -199,7 +201,7 @@ Be selective. Only extract what truly has signal. Empty arrays are better than n
                 </Select>
                 <Select value={sourcePlatform} onValueChange={setSourcePlatform}>
                   <SelectTrigger className="w-44 bg-card/50">
-                    <SelectValue placeholder="Platform (optional)" />
+                    <SelectValue placeholder="Platform" />
                   </SelectTrigger>
                   <SelectContent>
                     {PLATFORMS.map(p => (
@@ -208,34 +210,56 @@ Be selective. Only extract what truly has signal. Empty arrays are better than n
                   </SelectContent>
                 </Select>
               </div>
-              <div className="flex flex-wrap gap-3">
-                <Input
-                  value={threadTitle}
-                  onChange={(e) => setThreadTitle(e.target.value)}
-                  placeholder="Source thread title (optional)"
-                  className="flex-1 min-w-[200px] bg-card/50 border-border/50 text-sm"
-                />
-                <Input
-                  value={threadUrl}
-                  onChange={(e) => setThreadUrl(e.target.value)}
-                  placeholder="Source thread URL (optional)"
-                  className="flex-1 min-w-[200px] bg-card/50 border-border/50 text-sm"
-                />
-              </div>
-              <div className="flex flex-wrap gap-3">
-                <Input
-                  value={userAlias}
-                  onChange={(e) => setUserAlias(e.target.value)}
-                  placeholder="Your alias for this extraction (optional)"
-                  className="flex-1 min-w-[200px] bg-card/50 border-border/50 text-sm"
-                />
-                <Input
-                  type="datetime-local"
-                  value={originalDate}
-                  onChange={(e) => setOriginalDate(e.target.value)}
-                  className="w-52 bg-card/50 border-border/50 text-sm"
-                  title="Conversation timestamp (optional)"
-                />
+
+              {/* Optional: Collapsible source info */}
+              <div className="border border-border/30 rounded-lg overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setShowSourceInfo(v => !v)}
+                  className="w-full flex items-center justify-between px-4 py-2.5 text-left hover:bg-muted/20 transition-colors"
+                >
+                  <span className="text-xs text-muted-foreground">
+                    {showSourceInfo ? "Source Information" : "▸ Add Source Information"}
+                    {!showSourceInfo && <span className="ml-2 text-muted-foreground/40">(Recommended)</span>}
+                  </span>
+                  <ChevronDown className={`w-3.5 h-3.5 text-muted-foreground/50 transition-transform duration-200 ${showSourceInfo ? "rotate-180" : ""}`} />
+                </button>
+
+                <AnimatePresence initial={false}>
+                  {showSourceInfo && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-4 pb-4 pt-1 space-y-3 border-t border-border/20">
+                        <p className="text-[11px] text-muted-foreground/50 leading-relaxed">
+                          Adding source information improves continuity and makes it easier to revisit discoveries later.
+                        </p>
+                        <Input
+                          value={threadTitle}
+                          onChange={(e) => setThreadTitle(e.target.value)}
+                          placeholder="Source Thread Title"
+                          className="bg-card/50 border-border/50 text-sm"
+                        />
+                        <Input
+                          value={threadUrl}
+                          onChange={(e) => setThreadUrl(e.target.value)}
+                          placeholder="Source URL"
+                          className="bg-card/50 border-border/50 text-sm"
+                        />
+                        <Input
+                          value={userAlias}
+                          onChange={(e) => setUserAlias(e.target.value)}
+                          placeholder="User Alias (how you remember this idea)"
+                          className="bg-card/50 border-border/50 text-sm"
+                        />
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
 
