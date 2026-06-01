@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { motion } from "framer-motion";
 import EmptyState from "@/components/shared/EmptyState";
 import TagBadge from "@/components/shared/TagBadge";
+import CopyExtractionButton from "@/components/shared/CopyExtractionButton";
 
 export default function Workspace() {
   const { data: extractions = [], isLoading } = useQuery({
@@ -54,33 +55,39 @@ export default function Workspace() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.03 }}
             >
-              <Link
-                to={`/extraction/${e.id}`}
-                className="block p-5 rounded-xl border border-border/40 bg-card/50 hover:bg-card hover:border-border/80 transition-all duration-200 group"
-              >
+              <div className="block p-5 rounded-xl border border-border/40 bg-card/50 hover:bg-card hover:border-border/80 transition-all duration-200 group">
                 <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
-                    {e.title}
-                  </h3>
-                  <ArrowRight className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 mt-1" />
+                  <Link to={`/extraction/${e.id}`} className="flex-1 min-w-0">
+                    <h3 className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
+                      {e.title}
+                    </h3>
+                  </Link>
+                  <div className="flex items-center gap-2 flex-shrink-0 ml-3">
+                    <CopyExtractionButton extraction={e} size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity text-xs" />
+                    <Link to={`/extraction/${e.id}`}>
+                      <ArrowRight className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </Link>
+                  </div>
                 </div>
-                {e.core_insight && (
-                  <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed mb-3">
-                    {e.core_insight}
-                  </p>
-                )}
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[10px] text-muted-foreground/60">
-                    {format(new Date(e.created_date), "MMM d, yyyy")}
-                  </span>
-                  <span className="text-[10px] text-muted-foreground/40 capitalize">
-                    {(e.source_type || "").replace("_", " ")}
-                  </span>
-                  {e.suggested_tags?.slice(0, 4).map(tag => (
-                    <TagBadge key={tag} tag={tag} />
-                  ))}
-                </div>
-              </Link>
+                <Link to={`/extraction/${e.id}`}>
+                  {e.core_insight && (
+                    <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed mb-3">
+                      {e.core_insight}
+                    </p>
+                  )}
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-[10px] text-muted-foreground/60">
+                      {format(new Date(e.created_date), "MMM d, yyyy")}
+                    </span>
+                    <span className="text-[10px] text-muted-foreground/40 capitalize">
+                      {(e.source_type || "").replace("_", " ")}
+                    </span>
+                    {e.suggested_tags?.slice(0, 4).map(tag => (
+                      <TagBadge key={tag} tag={tag} />
+                    ))}
+                  </div>
+                </Link>
+              </div>
             </motion.div>
           ))}
         </div>

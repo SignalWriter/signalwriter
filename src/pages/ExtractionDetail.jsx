@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import ArtifactCard from "@/components/extraction/ArtifactCard";
 import MiraNote from "@/components/extraction/MiraNote";
 import TagBadge from "@/components/shared/TagBadge";
+import CopyExtractionButton from "@/components/shared/CopyExtractionButton";
 
 export default function ExtractionDetail() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -50,13 +51,16 @@ export default function ExtractionDetail() {
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-8 md:py-12">
-      <Link
-        to="/workspace"
-        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        Back to Workspace
-      </Link>
+      <div className="flex items-center justify-between mb-8">
+        <Link
+          to="/workspace"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back to Workspace
+        </Link>
+        <CopyExtractionButton extraction={extraction} />
+      </div>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">
