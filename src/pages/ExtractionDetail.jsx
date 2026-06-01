@@ -10,6 +10,7 @@ import SourceMetadata from "@/components/extraction/SourceMetadata";
 import TagBadge from "@/components/shared/TagBadge";
 import CopyExtractionButton from "@/components/shared/CopyExtractionButton";
 import LinkToPenfireButton from "@/components/extraction/LinkToPenfireButton";
+import DevelopmentSignals from "@/components/extraction/DevelopmentSignals";
 
 export default function ExtractionDetail() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -118,6 +119,12 @@ export default function ExtractionDetail() {
               index={i}
             />
           ))}
+        </div>
+      )}
+
+      {extraction.development_signals && (
+        <div className="mt-6">
+          <DevelopmentSignals signals={extraction.development_signals} />
         </div>
       )}
 

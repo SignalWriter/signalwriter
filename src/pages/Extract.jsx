@@ -10,6 +10,7 @@ import { Loader2, Sparkles, PenTool } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ArtifactCard from "@/components/extraction/ArtifactCard";
 import MiraNote from "@/components/extraction/MiraNote";
+import DevelopmentSignals from "@/components/extraction/DevelopmentSignals";
 import TagBadge from "@/components/shared/TagBadge";
 
 const SOURCE_TYPES = [
@@ -67,7 +68,8 @@ Extract the following artifacts. Be precise, insightful, and preserve the writer
 4. FRAMEWORK SEEDS: Principles, models, distinctions, or methodologies found (0-3 items)
 5. STORY SEEDS: Premises, characters, conflicts, themes, or narrative opportunities (0-3 items)
 6. PROJECT IMPLICATIONS: Features, workflows, business opportunities, or implementation ideas (0-3 items)
-7. QUOTABLE LINES: Phrases worth remembering verbatim from the source (0-5 items)
+7. DEVELOPMENT SIGNALS: Based on the material, identify which forms it could most naturally become (choose from: Article, Essay, Story, Novel, Video, Product, Presentation, Research Thread, Personal Reflection — select only the truly fitting ones), and give one clear recommendation for the most likely next step.
+8. QUOTABLE LINES: Phrases worth remembering verbatim from the source (0-5 items)
 8. EMERGING PATTERNS: Themes or recurring ideas you detect (0-3 items)
 9. OPEN LOOPS: Unresolved questions or unfinished threads (0-3 items)
 10. SUGGESTED TAGS: Keywords for categorization (3-7 tags)
@@ -101,6 +103,13 @@ Be selective. Only extract what truly has signal. Empty arrays are better than n
               type: "array",
               items: { type: "object", properties: { question: { type: "string" }, context: { type: "string" } } }
             },
+            development_signals: {
+              type: "object",
+              properties: {
+                potential_forms: { type: "array", items: { type: "string" } },
+                most_likely_next_step: { type: "string" },
+              }
+            },
             suggested_tags: { type: "array", items: { type: "string" } },
             mira_note: { type: "string" },
           },
@@ -131,6 +140,7 @@ Be selective. Only extract what truly has signal. Empty arrays are better than n
         quotable_lines: extractedData.quotable_lines,
         emerging_patterns: extractedData.emerging_patterns,
         open_loops: extractedData.open_loops,
+        development_signals: extractedData.development_signals,
         suggested_tags: extractedData.suggested_tags,
         mira_note: extractedData.mira_note,
       });
@@ -291,6 +301,11 @@ Be selective. Only extract what truly has signal. Empty arrays are better than n
                   />
                 ))}
               </div>
+            )}
+
+            {/* Development Signals */}
+            {extractedData.development_signals && (
+              <DevelopmentSignals signals={extractedData.development_signals} />
             )}
 
             {/* Tags */}

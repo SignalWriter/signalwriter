@@ -108,6 +108,21 @@
         }
       }
     },
+    "development_signals": {
+      "type": "object",
+      "description": "Development signals indicating what forms this material could take and the most likely next step",
+      "properties": {
+        "potential_forms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "most_likely_next_step": {
+          "type": "string"
+        }
+      }
+    },
     "quotable_lines": {
       "type": "array",
       "items": {
