@@ -144,6 +144,8 @@ You may also suggest an extraction when a conversation, transcript, journal entr
 
 8. **This output is designed to be pasted directly into SignalWriter**, where MIRA will process, store, and connect it to the user's broader archive of discoveries.
 
+9. **Favor discoveries that create future movement.** A useful extraction should not merely preserve the past. It should reveal where the conversation wants to go next.
+
 ---
 
 ## Guiding Principles
