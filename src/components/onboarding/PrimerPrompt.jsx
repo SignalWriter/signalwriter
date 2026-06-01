@@ -114,6 +114,11 @@ You may also suggest an extraction when a conversation, transcript, journal entr
   Context: [Why it matters]
 [Add more as relevant]
 
+**PENFIRES:**
+- [Potential Penfire]
+  Reason: [Why this may be a recurring signal worth tracking]
+[Add more as relevant]
+
 **SUGGESTED TAGS:** [tag1, tag2, tag3, tag4]
 
 **MIRA NOTE:**
