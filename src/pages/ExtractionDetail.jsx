@@ -9,6 +9,7 @@ import MiraNote from "@/components/extraction/MiraNote";
 import SourceMetadata from "@/components/extraction/SourceMetadata";
 import TagBadge from "@/components/shared/TagBadge";
 import CopyExtractionButton from "@/components/shared/CopyExtractionButton";
+import LinkToPenfireButton from "@/components/extraction/LinkToPenfireButton";
 
 export default function ExtractionDetail() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -60,7 +61,10 @@ export default function ExtractionDetail() {
           <ArrowLeft className="w-4 h-4" />
           Back to Workspace
         </Link>
-        <CopyExtractionButton extraction={extraction} />
+        <div className="flex items-center gap-2">
+          <LinkToPenfireButton extraction={extraction} />
+          <CopyExtractionButton extraction={extraction} />
+        </div>
       </div>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
