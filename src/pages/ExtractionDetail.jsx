@@ -79,6 +79,20 @@ export default function ExtractionDetail() {
 
         <SourceMetadata extraction={extraction} />
 
+        {extraction.source_text && (
+          <details className="group mb-6">
+            <summary className="flex items-center gap-2 text-xs text-muted-foreground cursor-pointer select-none hover:text-foreground transition-colors list-none">
+              <span className="inline-block transition-transform group-open:rotate-90">▶</span>
+              View Original Source Material
+            </summary>
+            <div className="mt-3 p-4 rounded-xl bg-muted/20 border border-border/30 max-h-[360px] overflow-y-auto">
+              <pre className="text-xs text-muted-foreground whitespace-pre-wrap font-mono leading-relaxed">
+                {extraction.source_text}
+              </pre>
+            </div>
+          </details>
+        )}
+
         {extraction.core_insight && (
           <ArtifactCard type="insight" content={extraction.core_insight} index={0} />
         )}
@@ -111,17 +125,7 @@ export default function ExtractionDetail() {
         </div>
       )}
 
-      {/* Source text collapsible */}
-      <details className="mt-10 group">
-        <summary className="text-xs text-muted-foreground cursor-pointer hover:text-foreground transition-colors">
-          View original source text
-        </summary>
-        <div className="mt-3 p-4 rounded-xl bg-muted/30 border border-border/30 max-h-[400px] overflow-auto">
-          <pre className="text-xs text-muted-foreground whitespace-pre-wrap font-mono leading-relaxed">
-            {extraction.source_text}
-          </pre>
-        </div>
-      </details>
+
     </div>
   );
 }
