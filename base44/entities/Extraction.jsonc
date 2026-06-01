@@ -169,6 +169,25 @@
     "mira_note": {
       "type": "string",
       "description": "MIRA's observation about this extraction"
+    },
+    "notes": {
+      "type": "array",
+      "description": "User notes attached to this extraction \u2014 thoughts, connections, intentions",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
     }
   },
   "required": [

@@ -41,6 +41,11 @@ export default function DevelopModal({ form, extraction, onClose }) {
       .map((s) => `- ${s.content}`)
       .join("\n");
 
+    const notesText = (extraction.notes || [])
+      .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+      .map((n) => `- ${n.content}`)
+      .join("\n");
+
     const data = await base44.integrations.Core.InvokeLLM({
       prompt: `You are MIRA, the Archivist for SignalWriter. Your role is to package a discovery for continuation, not to generate finished content.
 
@@ -51,7 +56,7 @@ CORE INSIGHT: ${extraction.core_insight || ""}
 EMERGING PATTERNS: ${themes.join(", ")}
 THOUGHT SEEDS:
 ${thoughtSeedsText}
-MIRA NOTE: ${extraction.mira_note || ""}
+MIRA NOTE: ${extraction.mira_note || ""}${notesText ? `\nUSER NOTES (thoughts captured after extraction):\n${notesText}` : ""}
 
 Generate a Context Transfer Package with the following fields:
 
