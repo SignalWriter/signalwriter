@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Link } from "react-router-dom";
@@ -7,6 +8,7 @@ import { motion } from "framer-motion";
 import { format } from "date-fns";
 import EmptyState from "@/components/shared/EmptyState";
 import TagBadge from "@/components/shared/TagBadge";
+import PrimerModal from "@/components/onboarding/PrimerModal";
 
 function RecentExtractionCard({ extraction, index }) {
   return (
@@ -67,6 +69,18 @@ function PenfireCard({ penfire, index }) {
 }
 
 export default function Dashboard() {
+  const [showPrimer, setShowPrimer] = useState(false);
+
+  useEffect(() => {
+    const dismissed = localStorage.getItem("sw_primer_dismissed");
+    if (!dismissed) setShowPrimer(true);
+  }, []);
+
+  const handleDismissPrimer = () => {
+    localStorage.setItem("sw_primer_dismissed", "1");
+    setShowPrimer(false);
+  };
+
   const { data: extractions = [], isLoading: loadingExtractions } = useQuery({
     queryKey: ["extractions"],
     queryFn: () => base44.entities.Extraction.list("-created_date", 10),
@@ -89,6 +103,7 @@ export default function Dashboard() {
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-8 md:py-12">
+      {showPrimer && <PrimerModal onDismiss={handleDismissPrimer} />}
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
