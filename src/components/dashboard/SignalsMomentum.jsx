@@ -216,8 +216,14 @@ export default function SignalsMomentum({ extractions = [], penfires = [] }) {
                       </h4>
                       <ArrowRight className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 mt-0.5 ml-1" />
                     </div>
+                    {e.source_thread_title && (
+                      <p className="text-[10px] text-muted-foreground/50 italic mb-1 truncate">
+                        {e.source_thread_title}
+                      </p>
+                    )}
                     <p className="text-[10px] text-muted-foreground/60 mb-2">
                       {format(new Date(e.created_date), "MMM d, yyyy")}
+                      {e.source_platform && <span className="ml-2 opacity-60">· {e.source_platform}</span>}
                     </p>
                     {e.core_insight && (
                       <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed mb-2">

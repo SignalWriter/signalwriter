@@ -100,8 +100,13 @@ export default function SearchPage() {
                         <h4 className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
                           {e.title}
                         </h4>
+                        {e.source_thread_title && (
+                          <p className="text-xs text-muted-foreground/60 italic mt-0.5">
+                            Source Thread — {e.source_thread_title}
+                          </p>
+                        )}
                         {e.user_alias && (
-                          <p className="text-xs text-muted-foreground/70 italic">"{e.user_alias}"</p>
+                          <p className="text-xs text-muted-foreground/50 italic">"{e.user_alias}"</p>
                         )}
                       </div>
                       <ArrowRight className="w-3.5 h-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 mt-0.5" />

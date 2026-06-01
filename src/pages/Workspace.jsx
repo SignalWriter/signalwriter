@@ -61,6 +61,11 @@ export default function Workspace() {
                     <h3 className="text-base font-medium text-foreground group-hover:text-primary transition-colors">
                       {e.title}
                     </h3>
+                    {e.source_thread_title && (
+                      <p className="text-xs text-muted-foreground/60 mt-0.5 truncate">
+                        Source Thread — <span className="italic">{e.source_thread_title}</span>
+                      </p>
+                    )}
                   </Link>
                   <div className="flex items-center gap-2 flex-shrink-0 ml-3">
                     <CopyExtractionButton extraction={e} size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity text-xs" />
@@ -79,6 +84,11 @@ export default function Workspace() {
                     <span className="text-[10px] text-muted-foreground/60">
                       {format(new Date(e.created_date), "MMM d, yyyy")}
                     </span>
+                    {e.source_platform && (
+                      <span className="text-[10px] text-muted-foreground/50 bg-muted/40 px-1.5 py-0.5 rounded">
+                        {e.source_platform}
+                      </span>
+                    )}
                     <span className="text-[10px] text-muted-foreground/40 capitalize">
                       {(e.source_type || "").replace("_", " ")}
                     </span>

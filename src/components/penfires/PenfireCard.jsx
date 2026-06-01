@@ -111,12 +111,17 @@ export default function PenfireCard({ penfire, relatedExtractions, index }) {
                 <Link
                   key={ext.id}
                   to={`/extraction/${ext.id}`}
-                  className="flex items-start gap-2 group"
+                  className="flex items-start gap-2 group p-2 rounded-lg hover:bg-muted/20 transition-colors"
                 >
                   <div className="w-1 h-1 rounded-full bg-primary/40 mt-1.5 shrink-0 group-hover:bg-primary transition-colors" />
                   <div className="min-w-0">
                     <p className="text-sm text-foreground/80 group-hover:text-foreground transition-colors truncate">{ext.title}</p>
-                    {ext.core_insight && (
+                    {ext.source_thread_title && (
+                      <p className="text-[10px] text-muted-foreground/50 italic truncate mt-0.5">
+                        Source Thread — {ext.source_thread_title}
+                      </p>
+                    )}
+                    {!ext.source_thread_title && ext.core_insight && (
                       <p className="text-xs text-muted-foreground truncate italic">"{ext.core_insight}"</p>
                     )}
                   </div>
