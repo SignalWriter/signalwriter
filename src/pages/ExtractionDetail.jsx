@@ -124,7 +124,7 @@ export default function ExtractionDetail() {
 
       {extraction.development_signals && (
         <div className="mt-6">
-          <DevelopmentSignals signals={extraction.development_signals} />
+          <DevelopmentSignals signals={extraction.development_signals} extraction={extraction} />
         </div>
       )}
 

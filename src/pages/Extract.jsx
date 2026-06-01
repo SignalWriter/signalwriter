@@ -305,7 +305,10 @@ Be selective. Only extract what truly has signal. Empty arrays are better than n
 
             {/* Development Signals */}
             {extractedData.development_signals && (
-              <DevelopmentSignals signals={extractedData.development_signals} />
+              <DevelopmentSignals
+                signals={extractedData.development_signals}
+                extraction={extractedData}
+              />
             )}
 
             {/* Tags */}
