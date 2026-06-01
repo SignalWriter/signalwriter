@@ -6,7 +6,7 @@ import { format } from "date-fns";
 import { motion } from "framer-motion";
 import ArtifactCard from "@/components/extraction/ArtifactCard";
 import MiraNote from "@/components/extraction/MiraNote";
-import SourceMetadata from "@/components/extraction/SourceMetadata";
+import ReturnToOrigin from "@/components/extraction/ReturnToOrigin";
 import TagBadge from "@/components/shared/TagBadge";
 import CopyExtractionButton from "@/components/shared/CopyExtractionButton";
 import LinkToPenfireButton from "@/components/extraction/LinkToPenfireButton";
@@ -80,9 +80,17 @@ export default function ExtractionDetail() {
           </span>
         </div>
 
-        <h1 className="font-display text-3xl text-foreground mb-6">{extraction.title}</h1>
+        <div className="mb-2">
+          <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-1">Emergence Title</p>
+          <h1 className="font-display text-3xl text-foreground">{extraction.title}</h1>
+          {extraction.user_alias && (
+            <p className="text-sm text-muted-foreground italic mt-1">"{extraction.user_alias}"</p>
+          )}
+        </div>
 
-        <SourceMetadata extraction={extraction} />
+        <div className="mb-6 mt-5">
+          <ReturnToOrigin extraction={extraction} />
+        </div>
 
         {extraction.source_text && (
           <details className="group mb-6">

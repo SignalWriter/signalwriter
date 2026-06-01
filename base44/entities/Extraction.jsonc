@@ -4,7 +4,11 @@
   "properties": {
     "title": {
       "type": "string",
-      "description": "Auto-generated title for the extraction"
+      "description": "MIRA-generated Emergence Title \u2014 describes what was discovered"
+    },
+    "user_alias": {
+      "type": "string",
+      "description": "Optional user-created nickname or personal title for this extraction"
     },
     "source_text": {
       "type": "string",
@@ -30,6 +34,9 @@
         "Claude",
         "Gemini",
         "Grok",
+        "Perplexity",
+        "NotebookLM",
+        "Obsidian",
         "Manual Entry",
         "Other"
       ],
@@ -37,16 +44,20 @@
     },
     "source_thread_title": {
       "type": "string",
-      "description": "Title of the original thread or document"
+      "description": "Title of the original conversation, thread, document, or source location"
+    },
+    "source_thread_url": {
+      "type": "string",
+      "description": "Optional share link, browser URL, or source link for the original conversation"
     },
     "source_original_date": {
       "type": "string",
-      "format": "date",
-      "description": "Original creation date of the source content"
+      "format": "date-time",
+      "description": "Date and time the source conversation or extraction moment occurred"
     },
     "source_link": {
       "type": "string",
-      "description": "Optional URL link to the original source"
+      "description": "Optional URL link to the original source (legacy field)"
     },
     "core_insight": {
       "type": "string",

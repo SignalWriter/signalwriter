@@ -24,7 +24,7 @@ const SOURCE_TYPES = [
 ];
 
 const PLATFORMS = [
-  "ChatGPT", "Claude", "Gemini", "Grok", "Manual Entry", "Other"
+  "ChatGPT", "Claude", "Gemini", "Grok", "Perplexity", "NotebookLM", "Obsidian", "Manual Entry", "Other"
 ];
 
 export default function Extract() {
@@ -32,7 +32,9 @@ export default function Extract() {
   const [sourceType, setSourceType] = useState("other");
   const [sourcePlatform, setSourcePlatform] = useState("");
   const [threadTitle, setThreadTitle] = useState("");
+  const [threadUrl, setThreadUrl] = useState("");
   const [originalDate, setOriginalDate] = useState("");
+  const [userAlias, setUserAlias] = useState("");
   const [sourceLink, setSourceLink] = useState("");
   const [extractedData, setExtractedData] = useState(null);
   const navigate = useNavigate();
@@ -130,7 +132,9 @@ Be selective. Only extract what truly has signal. Empty arrays are better than n
         source_type: sourceType,
         source_platform: sourcePlatform || undefined,
         source_thread_title: threadTitle || undefined,
+        source_thread_url: threadUrl || undefined,
         source_original_date: originalDate || undefined,
+        user_alias: userAlias || undefined,
         source_link: sourceLink || undefined,
         core_insight: extractedData.core_insight,
         thought_seeds: extractedData.thought_seeds,
@@ -208,21 +212,29 @@ Be selective. Only extract what truly has signal. Empty arrays are better than n
                 <Input
                   value={threadTitle}
                   onChange={(e) => setThreadTitle(e.target.value)}
-                  placeholder="Thread title (optional)"
+                  placeholder="Source thread title (optional)"
                   className="flex-1 min-w-[200px] bg-card/50 border-border/50 text-sm"
                 />
                 <Input
-                  type="date"
+                  value={threadUrl}
+                  onChange={(e) => setThreadUrl(e.target.value)}
+                  placeholder="Source thread URL (optional)"
+                  className="flex-1 min-w-[200px] bg-card/50 border-border/50 text-sm"
+                />
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <Input
+                  value={userAlias}
+                  onChange={(e) => setUserAlias(e.target.value)}
+                  placeholder="Your alias for this extraction (optional)"
+                  className="flex-1 min-w-[200px] bg-card/50 border-border/50 text-sm"
+                />
+                <Input
+                  type="datetime-local"
                   value={originalDate}
                   onChange={(e) => setOriginalDate(e.target.value)}
-                  className="w-44 bg-card/50 border-border/50 text-sm"
-                  title="Original date (optional)"
-                />
-                <Input
-                  value={sourceLink}
-                  onChange={(e) => setSourceLink(e.target.value)}
-                  placeholder="Source link (optional)"
-                  className="flex-1 min-w-[200px] bg-card/50 border-border/50 text-sm"
+                  className="w-52 bg-card/50 border-border/50 text-sm"
+                  title="Conversation timestamp (optional)"
                 />
               </div>
             </div>

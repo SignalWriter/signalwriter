@@ -26,7 +26,10 @@ export default function SearchPage() {
   const filteredExtractions = searchLower
     ? extractions.filter(e =>
         (e.title || "").toLowerCase().includes(searchLower) ||
+        (e.user_alias || "").toLowerCase().includes(searchLower) ||
         (e.core_insight || "").toLowerCase().includes(searchLower) ||
+        (e.source_platform || "").toLowerCase().includes(searchLower) ||
+        (e.source_thread_title || "").toLowerCase().includes(searchLower) ||
         (e.suggested_tags || []).some(t => t.toLowerCase().includes(searchLower)) ||
         (e.quotable_lines || []).some(q => q.toLowerCase().includes(searchLower)) ||
         (e.emerging_patterns || []).some(p => p.toLowerCase().includes(searchLower))
@@ -93,10 +96,15 @@ export default function SearchPage() {
                     className="block p-4 rounded-xl border border-border/40 bg-card/50 hover:bg-card hover:border-border/80 transition-all group"
                   >
                     <div className="flex items-start justify-between mb-1">
-                      <h4 className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
-                        {e.title}
-                      </h4>
-                      <ArrowRight className="w-3.5 h-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                      <div>
+                        <h4 className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                          {e.title}
+                        </h4>
+                        {e.user_alias && (
+                          <p className="text-xs text-muted-foreground/70 italic">"{e.user_alias}"</p>
+                        )}
+                      </div>
+                      <ArrowRight className="w-3.5 h-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 mt-0.5" />
                     </div>
                     {e.core_insight && (
                       <p className="text-xs text-muted-foreground line-clamp-2 mb-2">{e.core_insight}</p>
@@ -105,6 +113,11 @@ export default function SearchPage() {
                       <span className="text-[10px] text-muted-foreground/60">
                         {format(new Date(e.created_date), "MMM d")}
                       </span>
+                      {e.source_platform && (
+                        <span className="text-[10px] text-muted-foreground/50 bg-muted/40 px-1.5 py-0.5 rounded">
+                          {e.source_platform}
+                        </span>
+                      )}
                       {e.suggested_tags?.slice(0, 3).map(tag => (
                         <TagBadge key={tag} tag={tag} />
                       ))}
