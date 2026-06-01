@@ -1,85 +1,121 @@
-export function formatExtractionAsText(extraction) {
+export function formatExtractionAsText(extraction, penfires = []) {
   const lines = [];
 
-  lines.push(`# ${extraction.title}`);
-  lines.push(`Date: ${new Date(extraction.created_date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}`);
+  // ── Source Metadata ──────────────────────────────────────────────
+  lines.push("════════════════════════════════════════");
+  lines.push("SIGNALWRITER EXTRACTION");
+  lines.push("════════════════════════════════════════");
+  lines.push("");
+  lines.push(`Title:      ${extraction.title}`);
+  lines.push(`Date:       ${new Date(extraction.created_date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}`);
   if (extraction.source_type) {
-    lines.push(`Source: ${extraction.source_type.replace(/_/g, " ")}`);
+    lines.push(`Source:     ${extraction.source_type.replace(/_/g, " ")}`);
+  }
+  if (extraction.source_text) {
+    const wordCount = extraction.source_text.trim().split(/\s+/).length;
+    lines.push(`Word Count: ${wordCount.toLocaleString()} words (source)`);
   }
   lines.push("");
 
+  // ── Core Insight ─────────────────────────────────────────────────
   if (extraction.core_insight) {
-    lines.push("## Core Insight");
+    lines.push("── CORE INSIGHT ─────────────────────────");
     lines.push(extraction.core_insight);
     lines.push("");
   }
 
+  // ── Thought Seeds ────────────────────────────────────────────────
   if (extraction.thought_seeds?.length) {
-    lines.push("## Thought Seeds");
-    extraction.thought_seeds.forEach(s => {
-      lines.push(`- ${s.content}`);
-      if (s.context) lines.push(`  Context: ${s.context}`);
+    lines.push("── THOUGHT SEEDS ────────────────────────");
+    extraction.thought_seeds.forEach((s, i) => {
+      lines.push(`${i + 1}. ${s.content}`);
+      if (s.context) lines.push(`   Context: ${s.context}`);
     });
     lines.push("");
   }
 
+  // ── Framework Seeds ──────────────────────────────────────────────
   if (extraction.framework_seeds?.length) {
-    lines.push("## Framework Seeds");
-    extraction.framework_seeds.forEach(s => {
-      lines.push(`- ${s.name}: ${s.description}`);
+    lines.push("── FRAMEWORK SEEDS ──────────────────────");
+    extraction.framework_seeds.forEach((s, i) => {
+      lines.push(`${i + 1}. ${s.name}`);
+      if (s.description) lines.push(`   ${s.description}`);
     });
     lines.push("");
   }
 
+  // ── Story Seeds ──────────────────────────────────────────────────
   if (extraction.story_seeds?.length) {
-    lines.push("## Story Seeds");
-    extraction.story_seeds.forEach(s => {
-      lines.push(`- ${s.premise}`);
-      if (s.elements) lines.push(`  Elements: ${s.elements}`);
+    lines.push("── STORY SEEDS ──────────────────────────");
+    extraction.story_seeds.forEach((s, i) => {
+      lines.push(`${i + 1}. ${s.premise}`);
+      if (s.elements) lines.push(`   Elements: ${s.elements}`);
     });
     lines.push("");
   }
 
+  // ── Project Implications ─────────────────────────────────────────
   if (extraction.project_implications?.length) {
-    lines.push("## Project Implications");
-    extraction.project_implications.forEach(s => {
-      lines.push(`- ${s.idea}`);
-      if (s.domain) lines.push(`  Domain: ${s.domain}`);
+    lines.push("── PROJECT IMPLICATIONS ─────────────────");
+    extraction.project_implications.forEach((s, i) => {
+      lines.push(`${i + 1}. ${s.idea}`);
+      if (s.domain) lines.push(`   Domain: ${s.domain}`);
     });
     lines.push("");
   }
 
+  // ── Quotable Lines ───────────────────────────────────────────────
   if (extraction.quotable_lines?.length) {
-    lines.push("## Quotable Lines");
+    lines.push("── QUOTABLE LINES ───────────────────────");
     extraction.quotable_lines.forEach(q => lines.push(`"${q}"`));
     lines.push("");
   }
 
+  // ── Emerging Patterns ────────────────────────────────────────────
   if (extraction.emerging_patterns?.length) {
-    lines.push("## Emerging Patterns");
-    extraction.emerging_patterns.forEach(p => lines.push(`- ${p}`));
+    lines.push("── EMERGING PATTERNS ────────────────────");
+    extraction.emerging_patterns.forEach((p, i) => lines.push(`${i + 1}. ${p}`));
     lines.push("");
   }
 
+  // ── Open Loops ───────────────────────────────────────────────────
   if (extraction.open_loops?.length) {
-    lines.push("## Open Loops");
-    extraction.open_loops.forEach(l => {
-      lines.push(`- ${l.question}`);
-      if (l.context) lines.push(`  Context: ${l.context}`);
+    lines.push("── OPEN LOOPS ───────────────────────────");
+    extraction.open_loops.forEach((l, i) => {
+      lines.push(`${i + 1}. ${l.question}`);
+      if (l.context) lines.push(`   Context: ${l.context}`);
     });
     lines.push("");
   }
 
+  // ── Tags ─────────────────────────────────────────────────────────
   if (extraction.suggested_tags?.length) {
-    lines.push(`Tags: ${extraction.suggested_tags.join(", ")}`);
+    lines.push("── TAGS ─────────────────────────────────");
+    lines.push(extraction.suggested_tags.join(", "));
     lines.push("");
   }
 
+  // ── Penfires ─────────────────────────────────────────────────────
+  if (penfires?.length) {
+    lines.push("── PENFIRES ─────────────────────────────");
+    penfires.forEach((p, i) => {
+      lines.push(`${i + 1}. ${p.name} (${p.status})`);
+      if (p.description) lines.push(`   ${p.description}`);
+      if (p.occurrence_count) lines.push(`   Appearances: ${p.occurrence_count}`);
+    });
+    lines.push("");
+  }
+
+  // ── MIRA Note ────────────────────────────────────────────────────
   if (extraction.mira_note) {
-    lines.push("## MIRA Note");
+    lines.push("── MIRA NOTE ────────────────────────────");
     lines.push(extraction.mira_note);
     lines.push("");
   }
+
+  lines.push("════════════════════════════════════════");
+  lines.push("Extracted with SignalWriter");
+  lines.push("════════════════════════════════════════");
 
   return lines.join("\n");
 }
