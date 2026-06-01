@@ -235,7 +235,7 @@ Be selective. Only extract what truly has signal. Empty arrays are better than n
                       className="overflow-hidden"
                     >
                       <div className="px-4 pb-4 pt-1 space-y-3 border-t border-border/20">
-                        <p className="text-[11px] text-muted-foreground/50 leading-relaxed">
+                        <p className="text-[11px] text-foreground/70 leading-relaxed">
                           Adding source information improves continuity and makes it easier to revisit discoveries later.
                         </p>
                         <Input
