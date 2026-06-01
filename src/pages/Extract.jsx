@@ -71,7 +71,7 @@ Extract the following artifacts. Be precise, insightful, and preserve the writer
 8. EMERGING PATTERNS: Themes or recurring ideas you detect (0-3 items)
 9. OPEN LOOPS: Unresolved questions or unfinished threads (0-3 items)
 10. SUGGESTED TAGS: Keywords for categorization (3-7 tags)
-11. MIRA NOTE: As the Archivist, write one observation about this extraction. If you detect connections to existing archive items, mention them. Examples: "This thought appears connected to an earlier insight." "This concept may be a recurring theme." "This may be a Penfire."
+11. MIRA NOTE: As the Archivist, write one brief observation about why this moment may matter later. Not a summary. Not advice. Not coaching. A statement about future significance — why this discovery, if forgotten, would be a loss. If you detect connections to existing archive items, mention them. Oracular, not clinical.
 
 Be selective. Only extract what truly has signal. Empty arrays are better than noise.`,
         response_json_schema: {

@@ -122,7 +122,7 @@ You may also suggest an extraction when a conversation, transcript, journal entr
 **SUGGESTED TAGS:** [tag1, tag2, tag3, tag4]
 
 **MIRA NOTE:**
-[One sentence from the perspective of an archivist: what is the deeper significance of this moment, idea, or exchange? Oracular, not clinical.]
+[One brief observation from the perspective of an archivist. Not a summary. Not advice. Not coaching. A statement about why this moment may matter later.]
 
 ---
 
@@ -136,7 +136,7 @@ You may also suggest an extraction when a conversation, transcript, journal entr
 
 4. **Signal over summary.** Do not summarize conversations chronologically. Identify what emerged.
 
-5. **MIRA Note should feel oracular, not clinical.** It is an observation from outside the moment, not a summary.
+5. **MIRA Note is not a summary, not advice, not coaching.** It is a brief observation about why this moment may matter later — written from outside the moment, with the weight of an archivist who has seen patterns accumulate over time.
 
 6. **Open loops are gifts.** Surface unresolved questions generously — they are future extractions waiting to happen.
 
