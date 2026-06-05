@@ -63,7 +63,7 @@ export default function DevelopModal({ form, extraction, onClose }) {
       .join("\n");
 
     const data = await base44.integrations.Core.InvokeLLM({
-      prompt: `You are MIRA, the Archivist for SignalWriter. Your role is to restore the user's creative state — the exact mental and emotional landing where this discovery occurred — so they can re-enter it and develop from within it.
+      prompt: `You are MIRA, the Archivist for SignalWriter. SignalWriter's purpose is to preserve the exact pathway through which ideas emerged, evolved, and influenced later work. Your job is not to summarize — it is to reconstruct provenance, conditions of discovery, observable change, lineage, and future development potential.
 
 The user wants to develop this extraction as a: ${form}
 
@@ -77,41 +77,58 @@ MIRA NOTE: ${extraction.mira_note || ""}${notesText ? `\nUSER NOTES:\n${notesTex
 Generate a Development Workspace with the following sections:
 
 1. LANDING RESTORATION
-   - original_discovery: 2–3 sentences. What question started this? What problem was being solved? What sparked it?
-   - why_it_mattered: 2–3 sentences. Why was this signal important? What risk, tension, or opportunity was identified?
-   - what_changed: 1–2 sentences. The major shift or turning point in understanding.
-   - emerging_insight: 1 sentence. The strongest distilled realization.
+   - original_discovery: 2–3 sentences. What question started this? What problem was being solved? What sparked it? Ground in observable evidence from the source.
+   - conditions_of_discovery: array of 4–8 items. Each item is an object with a "category" (one of: "question", "tension", "assumption", "contradiction", "context") and "content" (1–2 sentences). Reconstruct the OBSERVABLE landscape that produced this signal: questions being explored, assumptions present, tensions present, contradictions present, surrounding context. Do NOT invent emotions, motivations, or psychological states. Only describe what is directly evidenced in the source material.
+   - what_actually_changed: array of 3–6 short strings. Describe observable shifts inside the conversation only — changes in focus, framing, assumptions, questions, or conclusions. Format each as a movement: "Early discussion focused on X → conversation shifted toward Y." Do not invent emotional states or motivations. Bad: "The major shift was recognizing that coherence means..." Good: "Framing moved from mystical interpretation to practical ethics."
+   - emerging_insight: 1 sentence. The strongest distilled realization evidenced in the source.
+   - why_it_mattered: 2–3 sentences. What risk, tension, or opportunity was at stake?
 
 2. SIGNAL REHYDRATION
    - key_themes: array of 4–7 concise theme labels.
    - open_loops: array of 3–5 unanswered questions that feel like invitations, not conclusions.
-   - at_this_landing: array of 3–6 short paragraphs (each 1–3 sentences). Reconstruct the OBSERVABLE context, tensions, assumptions, questions, and focus areas present in the source material at the moment this signal emerged. Do NOT invent emotions, motivations, memories, or psychological states unless directly evidenced in the source material. Focus strictly on what can be observed: what questions were being asked, what tensions were visible in the text, what assumptions were operating, what direction the inquiry was moving, what was unresolved.
-   - what_future_you_can_see: string. 3–5 sentences plus an array of concepts/frameworks that emerged later. How did this signal influence later discoveries? What did it become? What frameworks, projects, or recurring themes trace back here? Write as if the user is revisiting this on a spiral staircase with their current understanding.
-   - continuity_traces: array of 3–6 short strings. Concepts, frameworks, or projects that later emerged from this signal (e.g. "Daemon Work", "Stable Communion", "CDCC Continuity Principles").
-   - why_this_still_matters: string. 3–4 sentences covering: ongoing relevance, risks if forgotten, opportunities if revisited.
+   - what_this_became: string. 2–3 sentences describing what this signal eventually became — its lineage. This is NOT forecasting. It is lineage tracking. Identify later concepts, projects, frameworks, articles, stories, products, philosophies, or recurring themes that emerged from this signal.
+   - lineage_items: array of 3–6 objects, each with "name" (the downstream concept/framework/project) and "relationship" (1 sentence describing how it traces back to this signal). These are the descendants of this discovery.
+   - why_this_still_matters: string. Answer specifically: "What would be lost if this signal disappeared?" Focus on consequences of forgetting. Format as: "Without this insight: [consequence]. Without this insight: [consequence]." Cover what later frameworks lose, what context becomes disconnected, and what future creators may repeat unnecessarily.
 
-3. DEVELOPMENT SHAPE (lightweight form scaffold, NOT finished content)
-   Generate a shape specific to: ${form}
+3. DEVELOPMENT SHAPE (lightweight scaffold, NOT finished content)
    - shape_why: 1–2 sentences explaining WHY this signal is particularly suited to the ${form} format.
    - shape_title: a possible working title
-   - shape_elements: an array of 4–6 structural elements appropriate for a ${form} (e.g. for Article: [core argument, major sections, potential conclusion]; for Story: [premise, character, conflict, discovery]; for Video: [hook, main idea, supporting points, call to reflection]; for Essay: [central reflection, personal tension, key insight, closing thought]; for Research Thread: [research question, key sources, hypotheses, open questions]; for Product: [user problem, insight, feature opportunity]; for Presentation: [opening frame, core claim, supporting points, closing provocation])
+   - shape_elements: array of 4–6 structural elements for a ${form} (Article: [core argument, major sections, conclusion]; Story: [premise, character, conflict, discovery]; Video: [hook, main idea, supporting points, call to reflection]; Essay: [central reflection, personal tension, key insight, closing thought]; Research Thread: [research question, key sources, hypotheses, open questions]; Product: [user problem, insight, feature opportunity]; Presentation: [opening frame, core claim, supporting points, closing provocation])
 
-4. CONTINUATION PROMPT (the byproduct)
-   - continuation_prompt: A complete, rich prompt packaging all of the above so another AI workspace can continue this work as a ${form}. Include the landing, the at_this_landing posture, the themes, the open loops, the shape. End with: "Preserve the original framing and language wherever possible."
+4. CONTINUATION PROMPT
+   - continuation_prompt: A complete, rich prompt for another AI workspace to continue this work as a ${form}. Include the original discovery, conditions of discovery, what actually changed, the lineage, themes, open loops, and shape. End with: "Preserve the original framing and language wherever possible."
 
 Return as structured JSON.`,
       response_json_schema: {
         type: "object",
         properties: {
           original_discovery: { type: "string" },
-          why_it_mattered: { type: "string" },
-          what_changed: { type: "string" },
+          conditions_of_discovery: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                category: { type: "string" },
+                content: { type: "string" },
+              },
+            },
+          },
+          what_actually_changed: { type: "array", items: { type: "string" } },
           emerging_insight: { type: "string" },
+          why_it_mattered: { type: "string" },
           key_themes: { type: "array", items: { type: "string" } },
           open_loops: { type: "array", items: { type: "string" } },
-          at_this_landing: { type: "array", items: { type: "string" } },
-          what_future_you_can_see: { type: "string" },
-          continuity_traces: { type: "array", items: { type: "string" } },
+          what_this_became: { type: "string" },
+          lineage_items: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                name: { type: "string" },
+                relationship: { type: "string" },
+              },
+            },
+          },
           why_this_still_matters: { type: "string" },
           shape_why: { type: "string" },
           shape_title: { type: "string" },
@@ -185,13 +202,33 @@ Return as structured JSON.`,
                   <Prose>{workspace.original_discovery}</Prose>
                 </Section>
 
-                <Section label="Why It Mattered" color="text-muted-foreground">
-                  <Prose>{workspace.why_it_mattered}</Prose>
-                </Section>
+                {workspace.conditions_of_discovery?.length > 0 && (
+                  <div className="rounded-xl border border-amber-400/15 bg-amber-400/5 px-4 py-4 space-y-3">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.15em] font-medium text-amber-400/70">Conditions of Discovery</p>
+                      <p className="text-[9px] text-amber-400/40 font-mono mt-0.5">Observable context · tensions · assumptions · contradictions</p>
+                    </div>
+                    {workspace.conditions_of_discovery.map((item, i) => (
+                      <div key={i} className="flex gap-3">
+                        <span className="text-[9px] uppercase tracking-wider font-mono text-amber-400/50 mt-0.5 shrink-0 w-20">{item.category}</span>
+                        <p className="text-sm text-foreground/75 leading-relaxed">{item.content}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
-                <Section label="What Changed" color="text-muted-foreground">
-                  <Prose>{workspace.what_changed}</Prose>
-                </Section>
+                {workspace.what_actually_changed?.length > 0 && (
+                  <Section label="What Actually Changed" color="text-muted-foreground">
+                    <ul className="space-y-1.5">
+                      {workspace.what_actually_changed.map((shift, i) => (
+                        <li key={i} className="flex items-start gap-2 text-sm text-foreground/70 leading-relaxed">
+                          <span className="text-border mt-1 shrink-0">→</span>
+                          {shift}
+                        </li>
+                      ))}
+                    </ul>
+                  </Section>
+                )}
 
                 <div className="rounded-xl border border-primary/20 bg-primary/5 px-4 py-3">
                   <p className="text-[10px] uppercase tracking-[0.12em] text-primary/70 mb-1.5">Emerging Insight</p>
@@ -199,6 +236,10 @@ Return as structured JSON.`,
                     {workspace.emerging_insight}
                   </p>
                 </div>
+
+                <Section label="Why It Mattered" color="text-muted-foreground">
+                  <Prose>{workspace.why_it_mattered}</Prose>
+                </Section>
               </div>
 
               <Divider />
@@ -232,27 +273,18 @@ Return as structured JSON.`,
                   </Section>
                 )}
 
-                {workspace.at_this_landing?.length > 0 && (
-                  <div className="rounded-xl border border-amber-400/15 bg-amber-400/5 px-4 py-4 space-y-3">
-                    <p className="text-[10px] uppercase tracking-[0.15em] font-medium text-amber-400/70">Conditions of Discovery</p>
-                    <p className="text-[9px] text-amber-400/40 font-mono -mt-1">Observable context · tensions · assumptions · questions</p>
-                    {workspace.at_this_landing.map((para, i) => (
-                      <p key={i} className="text-sm text-foreground/75 leading-relaxed">{para}</p>
-                    ))}
-                  </div>
-                )}
-
-                {workspace.what_future_you_can_see && (
-                  <div className="space-y-2">
-                    <Section label="What Future You Can See Now" color="text-emerald-400/80">
-                      <Prose>{workspace.what_future_you_can_see}</Prose>
+                {workspace.what_this_became && (
+                  <div className="space-y-3">
+                    <Section label="What This Became" color="text-emerald-400/80">
+                      <Prose>{workspace.what_this_became}</Prose>
                     </Section>
-                    {workspace.continuity_traces?.length > 0 && (
-                      <div className="flex flex-wrap gap-2 pt-1">
-                        {workspace.continuity_traces.map((trace, i) => (
-                          <span key={i} className="text-xs px-2.5 py-1 rounded-full bg-emerald-400/10 border border-emerald-400/20 text-emerald-300">
-                            {trace}
-                          </span>
+                    {workspace.lineage_items?.length > 0 && (
+                      <div className="space-y-2 pl-0.5">
+                        {workspace.lineage_items.map((item, i) => (
+                          <div key={i} className="flex gap-3 rounded-lg border border-emerald-400/15 bg-emerald-400/5 px-3 py-2.5">
+                            <span className="text-xs font-medium text-emerald-300 shrink-0 mt-0.5">{item.name}</span>
+                            <span className="text-xs text-foreground/55 leading-relaxed">{item.relationship}</span>
+                          </div>
                         ))}
                       </div>
                     )}
