@@ -85,7 +85,7 @@ Generate a Development Workspace with the following sections:
 2. SIGNAL REHYDRATION
    - key_themes: array of 4–7 concise theme labels.
    - open_loops: array of 3–5 unanswered questions that feel like invitations, not conclusions.
-   - at_this_landing: array of 3–6 short paragraphs (each 1–3 sentences). Reconstruct the creator's mindset and orientation at the moment this signal emerged. NOT a summary — a reconstruction of creative posture. Describe: what the creator was wrestling with, what assumptions were active, what tension or uncertainty existed, what direction the thinking was moving, the emotional energy (exploratory, investigative, frustrated, excited, uncertain, etc.). Ground every paragraph in the actual conversation context. Write as if helping Future Me remember where I was standing.
+   - at_this_landing: array of 3–6 short paragraphs (each 1–3 sentences). Reconstruct the OBSERVABLE context, tensions, assumptions, questions, and focus areas present in the source material at the moment this signal emerged. Do NOT invent emotions, motivations, memories, or psychological states unless directly evidenced in the source material. Focus strictly on what can be observed: what questions were being asked, what tensions were visible in the text, what assumptions were operating, what direction the inquiry was moving, what was unresolved.
    - what_future_you_can_see: string. 3–5 sentences plus an array of concepts/frameworks that emerged later. How did this signal influence later discoveries? What did it become? What frameworks, projects, or recurring themes trace back here? Write as if the user is revisiting this on a spiral staircase with their current understanding.
    - continuity_traces: array of 3–6 short strings. Concepts, frameworks, or projects that later emerged from this signal (e.g. "Daemon Work", "Stable Communion", "CDCC Continuity Principles").
    - why_this_still_matters: string. 3–4 sentences covering: ongoing relevance, risks if forgotten, opportunities if revisited.
@@ -234,7 +234,8 @@ Return as structured JSON.`,
 
                 {workspace.at_this_landing?.length > 0 && (
                   <div className="rounded-xl border border-amber-400/15 bg-amber-400/5 px-4 py-4 space-y-3">
-                    <p className="text-[10px] uppercase tracking-[0.15em] font-medium text-amber-400/70">At This Landing</p>
+                    <p className="text-[10px] uppercase tracking-[0.15em] font-medium text-amber-400/70">Conditions of Discovery</p>
+                    <p className="text-[9px] text-amber-400/40 font-mono -mt-1">Observable context · tensions · assumptions · questions</p>
                     {workspace.at_this_landing.map((para, i) => (
                       <p key={i} className="text-sm text-foreground/75 leading-relaxed">{para}</p>
                     ))}
