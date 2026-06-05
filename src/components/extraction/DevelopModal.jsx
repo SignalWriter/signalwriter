@@ -85,16 +85,19 @@ Generate a Development Workspace with the following sections:
 2. SIGNAL REHYDRATION
    - key_themes: array of 4–7 concise theme labels.
    - open_loops: array of 3–5 unanswered questions that feel like invitations, not conclusions.
-   - what_future_you_can_see: 2–3 sentences. Looking at this signal from now — how did it evolve? What did it seed? (Write as if the user is revisiting this on a spiral staircase.)
+   - at_this_landing: array of 3–6 short paragraphs (each 1–3 sentences). Reconstruct the creator's mindset and orientation at the moment this signal emerged. NOT a summary — a reconstruction of creative posture. Describe: what the creator was wrestling with, what assumptions were active, what tension or uncertainty existed, what direction the thinking was moving, the emotional energy (exploratory, investigative, frustrated, excited, uncertain, etc.). Ground every paragraph in the actual conversation context. Write as if helping Future Me remember where I was standing.
+   - what_future_you_can_see: string. 3–5 sentences plus an array of concepts/frameworks that emerged later. How did this signal influence later discoveries? What did it become? What frameworks, projects, or recurring themes trace back here? Write as if the user is revisiting this on a spiral staircase with their current understanding.
+   - continuity_traces: array of 3–6 short strings. Concepts, frameworks, or projects that later emerged from this signal (e.g. "Daemon Work", "Stable Communion", "CDCC Continuity Principles").
+   - why_this_still_matters: string. 3–4 sentences covering: ongoing relevance, risks if forgotten, opportunities if revisited.
 
 3. DEVELOPMENT SHAPE (lightweight form scaffold, NOT finished content)
    Generate a shape specific to: ${form}
+   - shape_why: 1–2 sentences explaining WHY this signal is particularly suited to the ${form} format.
    - shape_title: a possible working title
-   - shape_elements: an array of 4–6 structural elements appropriate for a ${form} (e.g. for Article: [core argument, major sections, potential conclusion]; for Story: [premise, character, conflict, discovery]; for Video: [hook, main idea, supporting points, call to reflection])
-   - shape_note: 1 sentence. What makes this signal uniquely suited for a ${form}.
+   - shape_elements: an array of 4–6 structural elements appropriate for a ${form} (e.g. for Article: [core argument, major sections, potential conclusion]; for Story: [premise, character, conflict, discovery]; for Video: [hook, main idea, supporting points, call to reflection]; for Essay: [central reflection, personal tension, key insight, closing thought]; for Research Thread: [research question, key sources, hypotheses, open questions]; for Product: [user problem, insight, feature opportunity]; for Presentation: [opening frame, core claim, supporting points, closing provocation])
 
 4. CONTINUATION PROMPT (the byproduct)
-   - continuation_prompt: A complete, rich prompt packaging all of the above so another AI workspace can continue this work as a ${form}. Include the landing, the themes, the open loops, the shape. End with: "Preserve the original framing and language wherever possible."
+   - continuation_prompt: A complete, rich prompt packaging all of the above so another AI workspace can continue this work as a ${form}. Include the landing, the at_this_landing posture, the themes, the open loops, the shape. End with: "Preserve the original framing and language wherever possible."
 
 Return as structured JSON.`,
       response_json_schema: {
@@ -106,10 +109,13 @@ Return as structured JSON.`,
           emerging_insight: { type: "string" },
           key_themes: { type: "array", items: { type: "string" } },
           open_loops: { type: "array", items: { type: "string" } },
+          at_this_landing: { type: "array", items: { type: "string" } },
           what_future_you_can_see: { type: "string" },
+          continuity_traces: { type: "array", items: { type: "string" } },
+          why_this_still_matters: { type: "string" },
+          shape_why: { type: "string" },
           shape_title: { type: "string" },
           shape_elements: { type: "array", items: { type: "string" } },
-          shape_note: { type: "string" },
           continuation_prompt: { type: "string" },
         },
       },
@@ -226,10 +232,37 @@ Return as structured JSON.`,
                   </Section>
                 )}
 
+                {workspace.at_this_landing?.length > 0 && (
+                  <div className="rounded-xl border border-amber-400/15 bg-amber-400/5 px-4 py-4 space-y-3">
+                    <p className="text-[10px] uppercase tracking-[0.15em] font-medium text-amber-400/70">At This Landing</p>
+                    {workspace.at_this_landing.map((para, i) => (
+                      <p key={i} className="text-sm text-foreground/75 leading-relaxed">{para}</p>
+                    ))}
+                  </div>
+                )}
+
                 {workspace.what_future_you_can_see && (
-                  <Section label="What Future You Can See Now" color="text-emerald-400/80">
-                    <Prose>{workspace.what_future_you_can_see}</Prose>
-                  </Section>
+                  <div className="space-y-2">
+                    <Section label="What Future You Can See Now" color="text-emerald-400/80">
+                      <Prose>{workspace.what_future_you_can_see}</Prose>
+                    </Section>
+                    {workspace.continuity_traces?.length > 0 && (
+                      <div className="flex flex-wrap gap-2 pt-1">
+                        {workspace.continuity_traces.map((trace, i) => (
+                          <span key={i} className="text-xs px-2.5 py-1 rounded-full bg-emerald-400/10 border border-emerald-400/20 text-emerald-300">
+                            {trace}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {workspace.why_this_still_matters && (
+                  <div className="rounded-xl border border-border/30 bg-muted/20 px-4 py-4">
+                    <p className="text-[10px] uppercase tracking-[0.15em] font-medium text-muted-foreground mb-2">Why This Still Matters</p>
+                    <Prose>{workspace.why_this_still_matters}</Prose>
+                  </div>
                 )}
               </div>
 
@@ -238,6 +271,12 @@ Return as structured JSON.`,
               {/* ── SECTION 3: Development Shape ── */}
               <div className="space-y-4">
                 <p className="text-[9px] uppercase tracking-[0.2em] text-violet-400/60 font-mono">§ 3 — {form} Shape</p>
+
+                {workspace.shape_why && (
+                  <p className="text-xs text-muted-foreground/70 leading-relaxed italic border-l-2 border-violet-400/30 pl-3">
+                    {workspace.shape_why}
+                  </p>
+                )}
 
                 {workspace.shape_title && (
                   <Section label="Working Title" color="text-muted-foreground">
@@ -258,11 +297,7 @@ Return as structured JSON.`,
                   </Section>
                 )}
 
-                {workspace.shape_note && (
-                  <p className="text-xs text-muted-foreground/60 italic leading-relaxed">
-                    {workspace.shape_note}
-                  </p>
-                )}
+
               </div>
 
               <Divider />
