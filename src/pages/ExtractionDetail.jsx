@@ -12,6 +12,7 @@ import CopyExtractionButton from "@/components/shared/CopyExtractionButton";
 import LinkToPenfireButton from "@/components/extraction/LinkToPenfireButton";
 import DevelopmentSignals from "@/components/extraction/DevelopmentSignals";
 import ExtractionNotes from "@/components/extraction/ExtractionNotes";
+import RelatedDiscoveries from "@/components/extraction/RelatedDiscoveries";
 
 export default function ExtractionDetail() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -24,6 +25,12 @@ export default function ExtractionDetail() {
       return list[0];
     },
     enabled: !!id,
+  });
+
+  const { data: allExtractions } = useQuery({
+    queryKey: ["extractions-all"],
+    queryFn: () => base44.entities.Extraction.list(),
+    enabled: !!extraction,
   });
 
   if (isLoading) {
@@ -142,6 +149,8 @@ export default function ExtractionDetail() {
       <div className="mt-10 pt-8 border-t border-border/30">
         <ExtractionNotes extraction={extraction} />
       </div>
+
+      <RelatedDiscoveries extraction={extraction} allExtractions={allExtractions} />
 
     </div>
   );
