@@ -2,15 +2,17 @@ import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Link } from "react-router-dom";
-import { PenTool } from "lucide-react";
+import { PenTool, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import EmptyState from "@/components/shared/EmptyState";
 import PrimerModal from "@/components/onboarding/PrimerModal";
 import SignalsMomentum from "@/components/dashboard/SignalsMomentum";
+import QuickCaptureModal from "@/components/dashboard/QuickCaptureModal";
 
 export default function Dashboard() {
   const [showPrimer, setShowPrimer] = useState(false);
+  const [showQuickCapture, setShowQuickCapture] = useState(false);
 
   useEffect(() => {
     const dismissed = localStorage.getItem("sw_primer_dismissed");
@@ -73,6 +75,23 @@ export default function Dashboard() {
       ) : (
         <SignalsMomentum extractions={extractions} penfires={penfires} />
       )}
+      {/* Floating Quick Capture Button */}
+      <motion.button
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.4 }}
+        onClick={() => setShowQuickCapture(true)}
+        className="fixed bottom-6 right-6 z-40 flex items-center gap-2 px-4 py-3 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 hover:shadow-primary/20 hover:shadow-xl transition-all duration-200 group"
+      >
+        <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-200" />
+        <span className="text-sm font-medium">Capture</span>
+      </motion.button>
+
+      <AnimatePresence>
+        {showQuickCapture && (
+          <QuickCaptureModal onClose={() => setShowQuickCapture(false)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
