@@ -188,6 +188,50 @@
           }
         }
       }
+    },
+    "outcome": {
+      "type": "object",
+      "description": "What became of this discovery \u2014 closes the loop between discovery and execution",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "Published",
+            "Completed",
+            "In Progress",
+            "Scheduled",
+            "Abandoned",
+            "Merged Into Another Project",
+            "Archived",
+            "Still Exploring"
+          ]
+        },
+        "asset_title": {
+          "type": "string",
+          "description": "Title of the finished or in-progress asset"
+        },
+        "completion_date": {
+          "type": "string",
+          "format": "date",
+          "description": "When it was completed or published"
+        },
+        "url": {
+          "type": "string",
+          "description": "URL if published"
+        },
+        "notes": {
+          "type": "string",
+          "description": "What happened \u2014 the story of what this became"
+        },
+        "lessons_learned": {
+          "type": "string",
+          "description": "What you learned from completing or abandoning this"
+        },
+        "recorded_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
     }
   },
   "required": [

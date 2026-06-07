@@ -13,6 +13,7 @@ import LinkToPenfireButton from "@/components/extraction/LinkToPenfireButton";
 import DevelopmentSignals from "@/components/extraction/DevelopmentSignals";
 import ExtractionNotes from "@/components/extraction/ExtractionNotes";
 import RelatedDiscoveries from "@/components/extraction/RelatedDiscoveries";
+import ExtractionOutcome from "@/components/extraction/ExtractionOutcome";
 
 export default function ExtractionDetail() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -146,7 +147,8 @@ export default function ExtractionDetail() {
         </div>
       )}
 
-      <div className="mt-10 pt-8 border-t border-border/30">
+      <div className="mt-10 pt-8 border-t border-border/30 space-y-10">
+        <ExtractionOutcome extraction={extraction} />
         <ExtractionNotes extraction={extraction} />
       </div>
 

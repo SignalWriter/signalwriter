@@ -18,6 +18,7 @@ import ExtractionDetail from "@/pages/ExtractionDetail";
 import Workspace from "@/pages/Workspace";
 import Penfires from "@/pages/Penfires";
 import SearchPage from "@/pages/SearchPage";
+import Outcomes from "@/pages/Outcomes";
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -54,6 +55,7 @@ const AuthenticatedApp = () => {
           <Route path="/workspace" element={<Workspace />} />
           <Route path="/penfires" element={<Penfires />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/outcomes" element={<Outcomes />} />
         </Route>
       </Route>
 
