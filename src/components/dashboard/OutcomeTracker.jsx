@@ -1,7 +1,7 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { CheckCircle2, Circle, ArrowRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { CheckCircle2, Circle, ArrowRight, ChevronDown } from "lucide-react";
 import { format } from "date-fns";
 
 const STATUS_CONFIG = {
@@ -85,21 +85,28 @@ export default function OutcomeTracker({ extractions = [] }) {
     return { withOutcome, withoutOutcome, closed, active, statusBreakdown: breakdown };
   }, [extractions]);
 
-  // Show the 8 most recent extractions sorted: with outcome first, then by date
-  const displayList = useMemo(() => {
-    const sorted = [...extractions].sort((a, b) => {
-      const aHas = !!a.outcome?.status;
-      const bHas = !!b.outcome?.status;
-      if (aHas && !bHas) return -1;
-      if (!aHas && bHas) return 1;
-      return new Date(b.created_date) - new Date(a.created_date);
-    });
-    return sorted.slice(0, 8);
-  }, [extractions]);
+  // Active: In Progress + Scheduled, sorted by most recent
+  const activeList = useMemo(() =>
+    [...active].sort((a, b) => new Date(b.created_date) - new Date(a.created_date)),
+    [active]
+  );
+
+  // Completed: closed statuses, sorted by completion date then created date
+  const completedList = useMemo(() =>
+    [...closed].sort((a, b) => {
+      const aDate = a.outcome?.completion_date || a.created_date;
+      const bDate = b.outcome?.completion_date || b.created_date;
+      return new Date(bDate) - new Date(aDate);
+    }),
+    [closed]
+  );
+
+  const [showAllCompleted, setShowAllCompleted] = useState(false);
+  const visibleCompleted = showAllCompleted ? completedList : completedList.slice(0, 5);
 
   return (
-    <div className="space-y-4">
-      {/* Header row with stats */}
+    <div className="space-y-6">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
@@ -110,54 +117,6 @@ export default function OutcomeTracker({ extractions = [] }) {
           Full Outcomes →
         </Link>
       </div>
-
-      {/* Progress bar: breakdown by status */}
-      {withOutcome.length > 0 && (
-        <div className="space-y-2">
-          <div className="flex h-2 w-full rounded-full overflow-hidden bg-muted/40 gap-px">
-            {Object.entries(statusBreakdown).map(([status, count]) => {
-              const cfg = STATUS_CONFIG[status];
-              const pct = (count / extractions.length) * 100;
-              return (
-                <motion.div
-                  key={status}
-                  initial={{ width: 0 }}
-                  animate={{ width: `${pct}%` }}
-                  transition={{ duration: 0.6, ease: "easeOut" }}
-                  className={`h-full ${cfg?.bar || "bg-muted"}`}
-                  title={`${status}: ${count}`}
-                />
-              );
-            })}
-            {/* Remainder (no outcome) */}
-            {withoutOutcome.length > 0 && (
-              <div
-                className="h-full bg-muted/30 flex-1"
-                title={`No outcome: ${withoutOutcome.length}`}
-              />
-            )}
-          </div>
-
-          {/* Legend */}
-          <div className="flex flex-wrap gap-x-4 gap-y-1">
-            {Object.entries(statusBreakdown).map(([status, count]) => {
-              const cfg = STATUS_CONFIG[status];
-              return (
-                <div key={status} className="flex items-center gap-1.5">
-                  <div className={`w-1.5 h-1.5 rounded-full ${cfg?.dot || "bg-muted"}`} />
-                  <span className="text-[10px] text-muted-foreground/60">{status} ({count})</span>
-                </div>
-              );
-            })}
-            {withoutOutcome.length > 0 && (
-              <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/25" />
-                <span className="text-[10px] text-muted-foreground/40">Untracked ({withoutOutcome.length})</span>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* Quick stats */}
       <div className="grid grid-cols-3 gap-2">
@@ -175,17 +134,42 @@ export default function OutcomeTracker({ extractions = [] }) {
         </div>
       </div>
 
-      {/* Trajectory list */}
-      <div className="space-y-1.5">
-        {displayList.map((e, i) => (
-          <TrajectoryRow key={e.id} extraction={e} index={i} />
-        ))}
-      </div>
+      {/* Active Development */}
+      {activeList.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-[10px] uppercase tracking-[0.12em] text-amber-400/70 font-medium">Active Development</p>
+          <div className="space-y-1.5">
+            {activeList.map((e, i) => (
+              <TrajectoryRow key={e.id} extraction={e} index={i} />
+            ))}
+          </div>
+        </div>
+      )}
 
-      {extractions.length > 8 && (
-        <Link to="/workspace" className="text-xs text-muted-foreground/50 hover:text-primary transition-colors block text-right">
-          View all {extractions.length} extractions →
-        </Link>
+      {/* Completed Outcomes */}
+      {completedList.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-[10px] uppercase tracking-[0.12em] text-emerald-400/70 font-medium">Completed Outcomes</p>
+          <div className="space-y-1.5">
+            {visibleCompleted.map((e, i) => (
+              <TrajectoryRow key={e.id} extraction={e} index={i} />
+            ))}
+          </div>
+          {completedList.length > 5 && (
+            <button
+              onClick={() => setShowAllCompleted(v => !v)}
+              className="flex items-center gap-1 text-[10px] text-muted-foreground/50 hover:text-primary transition-colors"
+            >
+              <ChevronDown className={`w-3 h-3 transition-transform ${showAllCompleted ? "rotate-180" : ""}`} />
+              {showAllCompleted ? "Show less" : `Show ${completedList.length - 5} more`}
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* Empty state */}
+      {activeList.length === 0 && completedList.length === 0 && (
+        <p className="text-xs text-muted-foreground/40 italic">No outcomes recorded yet. Open an extraction to log what it became.</p>
       )}
     </div>
   );
