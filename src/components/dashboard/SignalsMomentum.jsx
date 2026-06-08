@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import BuildQueue from "./BuildQueue";
 import PotentialAssets from "./PotentialAssets";
+import OutcomeTracker from "./OutcomeTracker";
 
 function getMomentum(penfire) {
   const count = penfire.occurrence_count || 1;
@@ -153,7 +154,12 @@ export default function SignalsMomentum({ extractions = [], penfires = [] }) {
 
       <Divider />
 
-      {/* 3. MOST LIKELY NEXT STEP */}
+      {/* 3. OUTCOME TRACKER */}
+      <OutcomeTracker extractions={extractions} />
+
+      <Divider />
+
+      {/* 4. MOST LIKELY NEXT STEP */}
       {nextStep && (
         <div>
           <SectionHeader icon={Sparkles} iconClass="text-primary" subtitle="From signal density + open loops">
@@ -186,7 +192,7 @@ export default function SignalsMomentum({ extractions = [], penfires = [] }) {
 
       <Divider />
 
-      {/* 4. RECENT HIGH-IMPACT EXTRACTIONS */}
+      {/* 5. RECENT HIGH-IMPACT EXTRACTIONS */}
       {highImpact.length > 0 && (
         <div>
           <SectionHeader icon={Sparkles} iconClass="text-amber-400">Recent High-Impact Extractions</SectionHeader>
@@ -224,7 +230,7 @@ export default function SignalsMomentum({ extractions = [], penfires = [] }) {
 
       <Divider />
 
-      {/* 5. ACTIVE PENFIRES */}
+      {/* 6. ACTIVE PENFIRES */}
       {topPenfires.length > 0 && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div>
@@ -284,7 +290,7 @@ export default function SignalsMomentum({ extractions = [], penfires = [] }) {
 
       <Divider />
 
-      {/* 6. OPEN LOOPS */}
+      {/* 7. OPEN LOOPS */}
       {openLoops.length > 0 && (
         <div>
           <SectionHeader icon={CircleDot} iconClass="text-rose-400">Open Loops</SectionHeader>
