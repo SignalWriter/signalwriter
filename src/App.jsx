@@ -19,6 +19,7 @@ import Workspace from "@/pages/Workspace";
 import Penfires from "@/pages/Penfires";
 import SearchPage from "@/pages/SearchPage";
 import Outcomes from "@/pages/Outcomes";
+import Landing from "@/pages/Landing";
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -42,6 +43,7 @@ const AuthenticatedApp = () => {
 
   return (
     <Routes>
+      <Route path="/landing" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
