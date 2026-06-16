@@ -4,20 +4,9 @@ import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Trash2, ChevronDown } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { format } from "date-fns";
-import { cn } from "@/lib/utils";
 
-const NOTE_TEMPLATES = [
-  {
-    label: "Reflective",
-    text: "Observation:\n\nSignificance:\n\nFuture Implication:",
-  },
-  {
-    label: "Action-Oriented",
-    text: "Task:\n\nPriority:\n\nOwner / Timeline:",
-  },
-];
 
 function generateId() {
   return Math.random().toString(36).slice(2, 10);
@@ -27,14 +16,6 @@ export default function ExtractionNotes({ extraction }) {
   const [input, setInput] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [editContent, setEditContent] = useState("");
-  const [showTemplates, setShowTemplates] = useState(false);
-
-  const applyTemplate = (templateText) => {
-    if (!input.trim() || window.confirm("This will replace your current note text. Proceed?")) {
-      setInput(templateText);
-    }
-    setShowTemplates(false);
-  };
   const queryClient = useQueryClient();
 
   const notes = [...(extraction.notes || [])].sort(
@@ -166,38 +147,6 @@ export default function ExtractionNotes({ extraction }) {
 
       {/* Add note */}
       <div className="space-y-2">
-        {/* Template selector */}
-        <div className="relative">
-          <button
-            type="button"
-            onClick={() => setShowTemplates(v => !v)}
-            className="flex items-center gap-1 text-[10px] uppercase tracking-[0.12em] text-muted-foreground/50 hover:text-muted-foreground transition-colors"
-          >
-            Use template
-            <ChevronDown className={cn("w-3 h-3 transition-transform", showTemplates && "rotate-180")} />
-          </button>
-          <AnimatePresence>
-            {showTemplates && (
-              <motion.div
-                initial={{ opacity: 0, y: -4 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -4 }}
-                className="absolute left-0 top-6 z-10 flex gap-2"
-              >
-                {NOTE_TEMPLATES.map(t => (
-                  <button
-                    key={t.label}
-                    onClick={() => applyTemplate(t.text)}
-                    className="text-[10px] px-2.5 py-1 rounded-full border border-border/40 bg-card hover:bg-muted/40 hover:border-border/80 text-muted-foreground hover:text-foreground transition-all"
-                  >
-                    {t.label}
-                  </button>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
         <Textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
