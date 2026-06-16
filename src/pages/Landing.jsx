@@ -208,6 +208,20 @@ export default function Landing() {
               </div>
             ))}
           </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.15 }}
+            className="mt-10"
+          >
+            <img
+              src="https://media.base44.com/images/public/6a1cbdf2b03ac232db82850b/1f9fa95d5_CCOSquirrel2.png"
+              alt="SignalWriter archive — the squirrel investigating the good stuff"
+              className="w-full rounded-2xl shadow-2xl shadow-black/40"
+            />
+          </motion.div>
         </div>
       </section>
 
