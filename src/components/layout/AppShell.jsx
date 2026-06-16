@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { Flame, Home, PenTool, Search, Archive, Sparkles, CheckCircle2, Target } from "lucide-react";
+import { Flame, Home, PenTool, Search, Archive, Sparkles, CheckCircle2, Target, Map } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -10,6 +10,7 @@ const navItems = [
   { path: "/outcomes", label: "Outcomes", icon: CheckCircle2 },
   { path: "/search", label: "Search", icon: Search },
   { path: "/mission", label: "Mission", icon: Target },
+  { path: "/journey", label: "Journey", icon: Map },
 ];
 
 export default function AppShell() {

@@ -21,6 +21,7 @@ import SearchPage from "@/pages/SearchPage";
 import Outcomes from "@/pages/Outcomes";
 import Landing from "@/pages/Landing";
 import MissionAlignment from "@/pages/MissionAlignment";
+import MissionJourney from "@/pages/MissionJourney";
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -60,6 +61,7 @@ const AuthenticatedApp = () => {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/outcomes" element={<Outcomes />} />
           <Route path="/mission" element={<MissionAlignment />} />
+          <Route path="/journey" element={<MissionJourney />} />
         </Route>
       </Route>
 
