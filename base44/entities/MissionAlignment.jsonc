@@ -1,0 +1,86 @@
+{
+  "name": "MissionAlignment",
+  "type": "object",
+  "properties": {
+    "immediate_goals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "What the user is trying to accomplish right now"
+    },
+    "biggest_frustrations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "progress_in_30_days": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mira_priorities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "energy_sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "self_descriptions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mission_statement": {
+      "type": "string",
+      "description": "User's personal mission statement"
+    }
+  },
+  "rls": {
+    "create": {},
+    "read": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
