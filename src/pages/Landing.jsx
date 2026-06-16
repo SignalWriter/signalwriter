@@ -111,6 +111,19 @@ export default function Landing() {
 
           <WaitlistForm />
         </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="mt-16"
+        >
+          <img
+            src="https://media.base44.com/images/public/6a1cbdf2b03ac232db82850b/7411fc7eb_CCO_Squirrel.png"
+            alt="Chief Continuity Officer — the squirrel who knows your pain"
+            className="w-full max-w-2xl mx-auto rounded-2xl shadow-2xl shadow-black/40"
+          />
+        </motion.div>
       </section>
 
       {/* Divider quote */}
