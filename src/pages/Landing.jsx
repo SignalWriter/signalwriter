@@ -240,6 +240,20 @@ export default function Landing() {
               Whether you're writing books, building products, exploring theories, researching, journaling, or collaborating with AI — SignalWriter is the continuity layer between your thinking and your creating.
             </p>
 
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="mt-10"
+            >
+              <img
+                src="https://media.base44.com/images/public/6a1cbdf2b03ac232db82850b/38061b1d1_CCOSquirrel3.png"
+                alt="Built for people whose ideas have ideas"
+                className="w-full rounded-2xl shadow-2xl shadow-black/40"
+              />
+            </motion.div>
+
             <div className="mt-8 p-6 rounded-2xl border border-primary/15 bg-primary/5">
               <p className="font-display text-xl text-foreground mb-2">
                 The world has plenty of tools for generating ideas.
