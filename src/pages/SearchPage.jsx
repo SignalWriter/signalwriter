@@ -97,9 +97,16 @@ export default function SearchPage() {
                   >
                     <div className="flex items-start justify-between mb-1">
                       <div>
-                        <h4 className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
-                          {e.title}
-                        </h4>
+                        <div className="flex items-center gap-2">
+                          <h4 className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                            {e.title}
+                          </h4>
+                          {e.status === "archived" && (
+                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-muted/60 text-muted-foreground border border-border/30 flex-shrink-0">
+                              Archived
+                            </span>
+                          )}
+                        </div>
                         {e.source_thread_title && (
                           <p className="text-xs text-muted-foreground/60 italic mt-0.5">
                             Source Thread — {e.source_thread_title}

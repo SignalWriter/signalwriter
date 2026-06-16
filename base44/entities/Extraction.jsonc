@@ -10,6 +10,15 @@
       "type": "string",
       "description": "Optional user-created nickname or personal title for this extraction"
     },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "archived"
+      ],
+      "default": "active",
+      "description": "Active extractions appear in main views; archived are hidden but preserved"
+    },
     "source_text": {
       "type": "string",
       "description": "Original pasted content"
@@ -207,25 +216,20 @@
           ]
         },
         "asset_title": {
-          "type": "string",
-          "description": "Title of the finished or in-progress asset"
+          "type": "string"
         },
         "completion_date": {
           "type": "string",
-          "format": "date",
-          "description": "When it was completed or published"
+          "format": "date"
         },
         "url": {
-          "type": "string",
-          "description": "URL if published"
+          "type": "string"
         },
         "notes": {
-          "type": "string",
-          "description": "What happened \u2014 the story of what this became"
+          "type": "string"
         },
         "lessons_learned": {
-          "type": "string",
-          "description": "What you learned from completing or abandoning this"
+          "type": "string"
         },
         "recorded_at": {
           "type": "string",

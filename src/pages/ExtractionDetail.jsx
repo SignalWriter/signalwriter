@@ -14,6 +14,7 @@ import DevelopmentSignals from "@/components/extraction/DevelopmentSignals";
 import ExtractionNotes from "@/components/extraction/ExtractionNotes";
 import RelatedDiscoveries from "@/components/extraction/RelatedDiscoveries";
 import ExtractionOutcome from "@/components/extraction/ExtractionOutcome";
+import ArchiveDeleteActions from "@/components/extraction/ArchiveDeleteActions";
 
 export default function ExtractionDetail() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -74,6 +75,12 @@ export default function ExtractionDetail() {
         <div className="flex items-center gap-2">
           <LinkToPenfireButton extraction={extraction} />
           <CopyExtractionButton extraction={extraction} />
+          <ArchiveDeleteActions
+            extraction={extraction}
+            onArchived={() => window.history.back()}
+            onDeleted={() => window.history.back()}
+            onRestored={() => {}}
+          />
         </div>
       </div>
 

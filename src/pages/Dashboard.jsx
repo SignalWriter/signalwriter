@@ -26,7 +26,7 @@ export default function Dashboard() {
 
   const { data: extractions = [], isLoading: loadingExtractions } = useQuery({
     queryKey: ["extractions"],
-    queryFn: () => base44.entities.Extraction.list("-created_date", 30),
+    queryFn: () => base44.entities.Extraction.filter({ status: "active" }, "-created_date", 30),
   });
 
   const { data: penfires = [] } = useQuery({
