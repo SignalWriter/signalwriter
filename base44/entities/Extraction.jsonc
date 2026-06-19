@@ -198,6 +198,73 @@
         }
       }
     },
+    "references": {
+      "type": "array",
+      "description": "External resources providing context, inspiration, or supporting research",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "resource_type": {
+            "type": "string",
+            "enum": [
+              "Article",
+              "Video",
+              "Book",
+              "Podcast",
+              "Website",
+              "PDF / Document",
+              "Tool / App",
+              "Research",
+              "Other"
+            ]
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "influenced_projects": {
+      "type": "array",
+      "description": "Projects, stories, products, or initiatives that emerged from this extraction",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "project_type": {
+            "type": "string",
+            "enum": [
+              "Product",
+              "Story",
+              "Book",
+              "Essay",
+              "Course",
+              "Business",
+              "Framework",
+              "Community",
+              "Other"
+            ]
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "outcome": {
       "type": "object",
       "description": "What became of this discovery \u2014 closes the loop between discovery and execution",
