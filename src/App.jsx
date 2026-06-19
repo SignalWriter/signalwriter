@@ -22,6 +22,8 @@ import Outcomes from "@/pages/Outcomes";
 import Landing from "@/pages/Landing";
 import MissionAlignment from "@/pages/MissionAlignment";
 import MissionJourney from "@/pages/MissionJourney";
+import EmergingSignals from "@/pages/EmergingSignals";
+import SignalDetail from "@/pages/SignalDetail";
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -62,6 +64,8 @@ const AuthenticatedApp = () => {
           <Route path="/outcomes" element={<Outcomes />} />
           <Route path="/mission" element={<MissionAlignment />} />
           <Route path="/journey" element={<MissionJourney />} />
+          <Route path="/signals" element={<EmergingSignals />} />
+          <Route path="/signal/:id" element={<SignalDetail />} />
         </Route>
       </Route>
 

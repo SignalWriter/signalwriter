@@ -1,0 +1,111 @@
+{
+  "name": "Signal",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Concise, evocative name for the recurring pattern"
+    },
+    "summary": {
+      "type": "string",
+      "description": "AI-generated description of what this signal represents"
+    },
+    "trend": {
+      "type": "string",
+      "enum": [
+        "growing",
+        "stable",
+        "fading"
+      ],
+      "default": "stable"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "archived",
+        "merged"
+      ],
+      "default": "active"
+    },
+    "related_extraction_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "key_quotes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "first_seen": {
+      "type": "string",
+      "format": "date"
+    },
+    "last_seen": {
+      "type": "string",
+      "format": "date"
+    },
+    "related_signal_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "merged_into_id": {
+      "type": "string",
+      "description": "If merged, the signal this was merged into"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "name",
+    "summary"
+  ],
+  "rls": {
+    "create": {},
+    "read": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

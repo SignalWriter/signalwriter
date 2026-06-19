@@ -9,6 +9,7 @@ import EmptyState from "@/components/shared/EmptyState";
 import PrimerModal from "@/components/onboarding/PrimerModal";
 import SignalsMomentum from "@/components/dashboard/SignalsMomentum";
 import QuickCaptureModal from "@/components/dashboard/QuickCaptureModal";
+import DashboardSignalsPreview from "@/components/signals/DashboardSignalsPreview";
 
 export default function Dashboard() {
   const [showPrimer, setShowPrimer] = useState(false);
@@ -73,7 +74,10 @@ export default function Dashboard() {
           }
         />
       ) : (
-        <SignalsMomentum extractions={extractions} penfires={penfires} />
+        <>
+          <SignalsMomentum extractions={extractions} penfires={penfires} />
+          <DashboardSignalsPreview />
+        </>
       )}
       {/* Floating Quick Capture Button */}
       <motion.button
