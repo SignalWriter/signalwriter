@@ -62,7 +62,7 @@ export default function Dashboard() {
         <EmptyState
           icon={PenTool}
           title="Your signal archive is empty"
-          description="Paste a conversation, transcript, journal entry, or thought dump — and let MIRA extract what matters."
+          description={<>Every breakthrough starts somewhere.<br /><br />Paste a conversation, transcript, journal entry, or thought dump and let MIRA preserve what emerges.</>}
           action={
             <Link to="/extract">
               <Button className="gap-2">
