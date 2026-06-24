@@ -24,6 +24,8 @@ import MissionAlignment from "@/pages/MissionAlignment";
 import MissionJourney from "@/pages/MissionJourney";
 import EmergingSignals from "@/pages/EmergingSignals";
 import SignalDetail from "@/pages/SignalDetail";
+import ArtifactArchive from "@/pages/ArtifactArchive";
+import ArtifactDetail from "@/pages/ArtifactDetail";
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -66,6 +68,8 @@ const AuthenticatedApp = () => {
           <Route path="/journey" element={<MissionJourney />} />
           <Route path="/signals" element={<EmergingSignals />} />
           <Route path="/signal/:id" element={<SignalDetail />} />
+          <Route path="/artifacts" element={<ArtifactArchive />} />
+          <Route path="/artifact/:id" element={<ArtifactDetail />} />
         </Route>
       </Route>
 

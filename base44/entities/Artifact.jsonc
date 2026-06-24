@@ -1,0 +1,145 @@
+{
+  "name": "Artifact",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Title of the artifact"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Uploaded image URL"
+    },
+    "artifact_types": {
+      "type": "array",
+      "description": "Categories this artifact belongs to",
+      "items": {
+        "type": "string",
+        "enum": [
+          "Character",
+          "Location",
+          "Worldbuilding",
+          "Symbol / Glyph",
+          "Diagram",
+          "Research",
+          "Screenshot",
+          "Mood / Inspiration",
+          "Story Artifact",
+          "Concept Art",
+          "Project Asset",
+          "Other"
+        ]
+      }
+    },
+    "description": {
+      "type": "string",
+      "description": "What is this artifact? What does it represent?"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Personal notes about this artifact"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "emergence_summary": {
+      "type": "string",
+      "description": "MIRA-generated summary of what this artifact meant when it emerged"
+    },
+    "related_extraction_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "related_penfire_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "related_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "associated_projects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "associated_outcomes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "associated_conversations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "associated_missions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "archived"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "title"
+  ],
+  "rls": {
+    "create": {},
+    "read": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
