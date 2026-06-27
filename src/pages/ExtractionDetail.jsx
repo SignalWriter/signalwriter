@@ -12,6 +12,7 @@ import CopyExtractionButton from "@/components/shared/CopyExtractionButton";
 import LinkToPenfireButton from "@/components/extraction/LinkToPenfireButton";
 import DevelopmentSignals from "@/components/extraction/DevelopmentSignals";
 import ExtractionNotes from "@/components/extraction/ExtractionNotes";
+import ExtractionArtifacts from "@/components/extraction/ExtractionArtifacts";
 import ExtractionReferences from "@/components/extraction/ExtractionReferences";
 import ExtractionInfluencedProjects from "@/components/extraction/ExtractionInfluencedProjects";
 import RelatedDiscoveries from "@/components/extraction/RelatedDiscoveries";
@@ -158,6 +159,7 @@ export default function ExtractionDetail() {
 
       <div className="mt-10 pt-8 border-t border-border/30 space-y-10">
         <ExtractionOutcome extraction={extraction} />
+        <ExtractionArtifacts extraction={extraction} />
         <ExtractionNotes extraction={extraction} />
         <ExtractionReferences extraction={extraction} />
         <ExtractionInfluencedProjects extraction={extraction} />
