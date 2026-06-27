@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { Flame, Home, PenTool, Search, Sparkles, CheckCircle2, Target, Map, BookOpen, Radar, Archive } from "lucide-react";
+import { Flame, Home, PenTool, Search, Sparkles, CheckCircle2, Target, Map, BookOpen, Radar, Archive, BookMarked } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -11,6 +11,7 @@ const navItems = [
   { path: "/artifacts", label: "Artifact Archive", icon: Archive },
   { path: "/mission", label: "Mission Alignment", icon: Target },
   { path: "/journey", label: "Mission Journey", icon: Map },
+  { path: "/projects", label: "Projects", icon: BookMarked },
   { path: "/outcomes", label: "Outcomes", icon: CheckCircle2 },
   { path: "/search", label: "Search", icon: Search },
 ];

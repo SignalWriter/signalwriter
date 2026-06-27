@@ -1,0 +1,173 @@
+{
+  "name": "CanonUpdate",
+  "type": "object",
+  "properties": {
+    "project_id": {
+      "type": "string",
+      "description": "The project this update belongs to"
+    },
+    "source_text": {
+      "type": "string",
+      "description": "The conversation/content that triggered the canon update"
+    },
+    "source_type": {
+      "type": "string",
+      "enum": [
+        "conversation",
+        "transcript",
+        "note",
+        "article",
+        "journal",
+        "thought_dump",
+        "other"
+      ],
+      "default": "conversation"
+    },
+    "source_platform": {
+      "type": "string"
+    },
+    "canon_changes": {
+      "type": "string",
+      "description": "What has become newly true"
+    },
+    "new_canon_entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "confidence": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "canon_updates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "delta": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "relationships": {
+      "type": "string"
+    },
+    "contradictions": {
+      "type": "string"
+    },
+    "timeline_notes": {
+      "type": "string"
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "relevance": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "influenced_projects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "canon_summary": {
+      "type": "string",
+      "description": "Rewritten canon summary after this update"
+    },
+    "suggested_queries": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "open_threads": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "confidence_notes": {
+      "type": "string"
+    },
+    "mira_note": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "project_id",
+    "source_text"
+  ],
+  "rls": {
+    "create": {},
+    "read": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

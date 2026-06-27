@@ -26,6 +26,10 @@ import EmergingSignals from "@/pages/EmergingSignals";
 import SignalDetail from "@/pages/SignalDetail";
 import ArtifactArchive from "@/pages/ArtifactArchive";
 import ArtifactDetail from "@/pages/ArtifactDetail";
+import Projects from "@/pages/Projects";
+import ProjectDetail from "@/pages/ProjectDetail";
+import CanonUpdateInput from "@/pages/CanonUpdateInput";
+import CanonResult from "@/pages/CanonResult";
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -70,6 +74,10 @@ const AuthenticatedApp = () => {
           <Route path="/signal/:id" element={<SignalDetail />} />
           <Route path="/artifacts" element={<ArtifactArchive />} />
           <Route path="/artifact/:id" element={<ArtifactDetail />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/project/:id" element={<ProjectDetail />} />
+          <Route path="/canon-update/:id" element={<CanonUpdateInput />} />
+          <Route path="/canon-result/:id" element={<CanonResult />} />
         </Route>
       </Route>
 
