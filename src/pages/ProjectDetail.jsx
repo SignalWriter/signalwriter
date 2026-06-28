@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
 import { CanonEntryCard, CanonSectionHeader } from "@/components/canon/CanonSection";
+import ContradictionTracker from "@/components/canon/ContradictionTracker";
 
 const STATUS_OPTIONS = ["active", "dormant", "completed", "archived"];
 const CATEGORY_OPTIONS = ["Character", "Concept", "Terminology", "Location", "System", "Relationship", "Rule", "Theme", "Framework", "Other"];
@@ -233,6 +234,11 @@ export default function ProjectDetail() {
               ))}
             </div>
           </div>
+        )}
+
+        {/* Contradiction Tracker */}
+        {canonUpdates.length > 0 && (
+          <ContradictionTracker projectId={id} canonUpdates={canonUpdates} />
         )}
 
         {/* Canon Update History */}
