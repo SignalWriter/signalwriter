@@ -30,6 +30,7 @@ import Projects from "@/pages/Projects";
 import ProjectDetail from "@/pages/ProjectDetail";
 import CanonUpdateInput from "@/pages/CanonUpdateInput";
 import CanonResult from "@/pages/CanonResult";
+import CanonEvolution from "@/pages/CanonEvolution";
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -78,6 +79,7 @@ const AuthenticatedApp = () => {
           <Route path="/project/:id" element={<ProjectDetail />} />
           <Route path="/canon-update/:id" element={<CanonUpdateInput />} />
           <Route path="/canon-result/:id" element={<CanonResult />} />
+          <Route path="/canon-evolution" element={<CanonEvolution />} />
         </Route>
       </Route>
 
