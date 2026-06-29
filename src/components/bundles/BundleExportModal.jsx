@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { X, Copy, Check, FileText, Code2, AlignLeft, Loader2 } from "lucide-react";
+import { X, Copy, Check, FileText, Code2, AlignLeft, Download } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -92,6 +92,11 @@ function buildLLMPrompt(bundle, resolvedItems) {
   return lines.join("\n");
 }
 
+function getFileExtension(fmt) {
+  if (fmt === "markdown") return "md";
+  return "txt";
+}
+
 export default function BundleExportModal({ bundle, onClose }) {
   const [format, setFormat] = useState("llm");
   const [copied, setCopied] = useState(false);
@@ -110,17 +115,33 @@ export default function BundleExportModal({ bundle, onClose }) {
 
   const output = getOutput();
 
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(output);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-
-    // Track use count
-    await base44.entities.ContextBundle.update(bundle.id, {
+  const trackUsage = () => {
+    base44.entities.ContextBundle.update(bundle.id, {
       use_count: (bundle.use_count || 0) + 1,
       last_used: new Date().toISOString(),
     });
     queryClient.invalidateQueries({ queryKey: ["context-bundles"] });
+  };
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(output);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+    trackUsage();
+  };
+
+  const handleDownload = () => {
+    const ext = getFileExtension(format);
+    const slug = bundle.title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+    const filename = `${slug}-bundle.${ext}`;
+    const blob = new Blob([output], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+    trackUsage();
   };
 
   const formatOptions = [
@@ -178,9 +199,12 @@ export default function BundleExportModal({ bundle, onClose }) {
           </pre>
         </div>
 
-        <div className="px-6 py-4 border-t border-border/30">
-          <Button onClick={handleCopy} className="w-full gap-2">
+        <div className="px-6 py-4 border-t border-border/30 flex gap-2">
+          <Button onClick={handleCopy} className="flex-1 gap-2">
             {copied ? <><Check className="w-4 h-4" />Copied!</> : <><Copy className="w-4 h-4" />Copy to Clipboard</>}
+          </Button>
+          <Button onClick={handleDownload} variant="outline" className="gap-2 flex-shrink-0">
+            <Download className="w-4 h-4" /> Download
           </Button>
         </div>
       </motion.div>
