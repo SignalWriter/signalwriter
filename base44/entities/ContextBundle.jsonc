@@ -1,0 +1,135 @@
+{
+  "name": "ContextBundle",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Bundle title"
+    },
+    "purpose": {
+      "type": "string",
+      "description": "What this bundle is for \u2014 the task or conversation context it prepares"
+    },
+    "bundle_type": {
+      "type": "string",
+      "enum": [
+        "Writing Project",
+        "Story Bible",
+        "Product Development",
+        "Research",
+        "Marketing",
+        "Business",
+        "Worldbuilding",
+        "Character",
+        "Personal Philosophy",
+        "Custom"
+      ],
+      "default": "Custom"
+    },
+    "items": {
+      "type": "array",
+      "description": "Items included in this bundle",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "item_type": {
+            "type": "string",
+            "enum": [
+              "extraction",
+              "penfire",
+              "project",
+              "artifact",
+              "signal",
+              "mission_alignment",
+              "custom_note"
+            ]
+          },
+          "item_id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "content_snapshot": {
+            "type": "string",
+            "description": "Cached text content for export"
+          }
+        }
+      }
+    },
+    "custom_instructions": {
+      "type": "string",
+      "description": "Custom instructions to prepend to the exported context"
+    },
+    "mira_generated": {
+      "type": "boolean",
+      "description": "Whether MIRA generated this bundle recommendation",
+      "default": false
+    },
+    "mira_note": {
+      "type": "string",
+      "description": "MIRA's rationale for this bundle"
+    },
+    "last_used": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "use_count": {
+      "type": "number",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "archived"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "title"
+  ],
+  "rls": {
+    "create": {},
+    "read": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

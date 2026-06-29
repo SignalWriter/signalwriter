@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { Flame, Home, PenTool, Search, Sparkles, CheckCircle2, Target, Map, BookOpen, Radar, Archive, BookMarked, GitBranch } from "lucide-react";
+import { Flame, Home, PenTool, Search, Sparkles, CheckCircle2, Target, Map, BookOpen, Radar, Archive, BookMarked, GitBranch, Package } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -13,6 +13,7 @@ const navItems = [
   { path: "/journey", label: "Mission Journey", icon: Map },
   { path: "/projects", label: "Projects", icon: BookMarked },
   { path: "/canon-evolution", label: "Canon Evolution", icon: GitBranch },
+  { path: "/bundles", label: "Context Bundles", icon: Package },
   { path: "/outcomes", label: "Outcomes", icon: CheckCircle2 },
   { path: "/search", label: "Search", icon: Search },
 ];
