@@ -1,11 +1,191 @@
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Link } from "react-router-dom";
-import { ArrowLeft, BookMarked, BookOpen } from "lucide-react";
-import { motion } from "framer-motion";
+import { ArrowLeft, BookMarked, BookOpen, AlertTriangle, Sparkles, CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
+import { useState } from "react";
 import { CanonEntryCard, CanonBlock, CanonListBlock, CanonSectionHeader } from "@/components/canon/CanonSection";
 import MiraNote from "@/components/extraction/MiraNote";
+import { Button } from "@/components/ui/button";
+
+function ContradictionReviewSection({ update, project }) {
+  const [analysing, setAnalysing] = useState(false);
+  const [miraFlags, setMiraFlags] = useState(null);
+  const [showExisting, setShowExisting] = useState(false);
+
+  // Parse stored contradictions text into bullet lines for display
+  const storedLines = (update.contradictions || "")
+    .split("\n")
+    .map(l => l.replace(/^[-•*]\s*/, "").trim())
+    .filter(Boolean);
+
+  const hasStoredContradictions = storedLines.length > 0;
+
+  const runMiraAnalysis = async () => {
+    if (!project) return;
+    setAnalysing(true);
+    const canonEntries = (project.canon_entries || [])
+      .map(e => `${e.name} (${e.category}): ${e.description}`)
+      .join("\n");
+    const canonSummary = project.canon_summary || "";
+    const newChanges = update.canon_changes || "";
+    const newEntries = (update.new_canon_entries || [])
+      .map(e => `${e.name}: ${e.description}`)
+      .join("\n");
+
+    const res = await base44.integrations.Core.InvokeLLM({
+      prompt: `You are MIRA, a canon continuity analyst. Compare the new canon update against the established project canon and identify specific contradictions or tensions.
+
+ESTABLISHED CANON SUMMARY:
+${canonSummary || "(none yet)"}
+
+ESTABLISHED CANON ENTRIES:
+${canonEntries || "(none yet)"}
+
+NEW CANON CHANGES:
+${newChanges}
+
+NEW CANON ENTRIES:
+${newEntries || "(none)"}
+
+Identify contradictions where the new information conflicts with what was previously established. Be specific — name the exact canon entry or concept in conflict. If there are no contradictions, say so clearly.
+
+Return JSON with:
+- contradictions: array of objects with { canon_item: string, conflict: string, severity: "high"|"medium"|"low", suggestion: string }
+- verdict: "clear" | "tensions_found"
+- summary: string (one sentence overview)`,
+      response_json_schema: {
+        type: "object",
+        properties: {
+          contradictions: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                canon_item: { type: "string" },
+                conflict: { type: "string" },
+                severity: { type: "string" },
+                suggestion: { type: "string" }
+              }
+            }
+          },
+          verdict: { type: "string" },
+          summary: { type: "string" }
+        }
+      }
+    });
+
+    setMiraFlags(res);
+    setAnalysing(false);
+  };
+
+  const severityStyle = {
+    high: "border-red-400/30 bg-red-400/5 text-red-400",
+    medium: "border-amber-400/30 bg-amber-400/5 text-amber-400",
+    low: "border-border/40 bg-muted/20 text-muted-foreground",
+  };
+
+  return (
+    <div className="space-y-4">
+      {/* Header */}
+      <div className="flex items-center gap-2">
+        <AlertTriangle className="w-4 h-4 text-amber-400" />
+        <span className="text-sm font-medium text-foreground uppercase tracking-[0.05em]">Contradiction Review</span>
+        {hasStoredContradictions && (
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-400/10 text-amber-400">{storedLines.length} flagged</span>
+        )}
+      </div>
+
+      {/* Stored contradictions from the original MIRA analysis */}
+      {hasStoredContradictions && (
+        <div className="space-y-2">
+          <p className="text-[10px] uppercase tracking-[0.1em] text-muted-foreground/50">From this update's analysis</p>
+          {storedLines.map((line, i) => (
+            <div key={i} className="flex items-start gap-3 p-3 rounded-xl border border-amber-400/20 bg-amber-400/5">
+              <AlertTriangle className="w-3.5 h-3.5 text-amber-400 flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-foreground/80 leading-relaxed">{line}</p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {!hasStoredContradictions && !miraFlags && (
+        <div className="p-4 rounded-xl border border-border/30 bg-muted/10">
+          <p className="text-xs text-muted-foreground/50 italic">No contradictions were flagged in the original analysis.</p>
+        </div>
+      )}
+
+      {/* Deep analysis against established canon */}
+      {project && (
+        <div className="pt-2">
+          {!miraFlags ? (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={runMiraAnalysis}
+              disabled={analysing || !(project.canon_entries?.length > 0 || project.canon_summary)}
+              className="gap-2 text-xs h-8 border-primary/20 hover:border-primary/40"
+            >
+              {analysing
+                ? <><div className="w-3 h-3 border border-primary/30 border-t-primary rounded-full animate-spin" />Analysing canon…</>
+                : <><Sparkles className="w-3.5 h-3.5 text-primary" />Deep-scan against established canon</>}
+            </Button>
+          ) : (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <p className="text-[10px] uppercase tracking-[0.1em] text-muted-foreground/50">MIRA deep scan — vs. established canon</p>
+                <button onClick={() => setMiraFlags(null)} className="text-[10px] text-muted-foreground/40 hover:text-muted-foreground transition-colors">Clear</button>
+              </div>
+
+              {miraFlags.verdict === "clear" ? (
+                <div className="flex items-center gap-3 p-4 rounded-xl border border-emerald-400/20 bg-emerald-400/5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-emerald-400">No contradictions found</p>
+                    {miraFlags.summary && <p className="text-xs text-foreground/60 mt-0.5">{miraFlags.summary}</p>}
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {miraFlags.summary && (
+                    <p className="text-xs text-foreground/60 italic px-1">{miraFlags.summary}</p>
+                  )}
+                  {(miraFlags.contradictions || []).map((c, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.06 }}
+                      className={`p-4 rounded-xl border ${severityStyle[c.severity] || severityStyle.low}`}
+                    >
+                      <div className="flex items-start gap-2 mb-2">
+                        <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
+                        <div className="flex-1">
+                          <p className="text-xs font-medium">{c.canon_item}</p>
+                          <span className="text-[10px] opacity-60 capitalize">{c.severity} tension</span>
+                        </div>
+                      </div>
+                      <p className="text-sm text-foreground/75 leading-relaxed mb-2">{c.conflict}</p>
+                      {c.suggestion && (
+                        <p className="text-xs text-foreground/50 italic border-t border-current/10 pt-2 mt-2">
+                          Suggestion: {c.suggestion}
+                        </p>
+                      )}
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+          {!project.canon_entries?.length && !project.canon_summary && (
+            <p className="text-[10px] text-muted-foreground/30 mt-2 italic">Deep scan requires established canon entries or a canon summary on the project.</p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function CanonResult() {
   const id = window.location.pathname.split("/").pop();
@@ -86,8 +266,8 @@ export default function CanonResult() {
         {/* Relationships */}
         <CanonBlock label="Relationships" content={update.relationships} />
 
-        {/* Contradictions & Tensions */}
-        <CanonBlock label="Contradictions & Tensions" content={update.contradictions} />
+        {/* Contradictions & Tensions — dedicated review section */}
+        <ContradictionReviewSection update={update} project={project} />
 
         {/* Timeline */}
         <CanonBlock label="Timeline of Emergence" content={update.timeline_notes} />
