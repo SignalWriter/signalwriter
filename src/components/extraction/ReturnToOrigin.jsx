@@ -28,7 +28,16 @@ export default function ReturnToOrigin({ extraction }) {
 
   if (!hasAny) return null;
 
-  const sourceUrl = extraction.source_thread_url || extraction.source_link;
+  const rawUrl = extraction.source_thread_url || extraction.source_link;
+  const sourceUrl = (() => {
+    if (!rawUrl) return "";
+    try {
+      const u = new URL(rawUrl, window.location.origin);
+      return ["http:", "https:"].includes(u.protocol) ? u.href : "";
+    } catch {
+      return "";
+    }
+  })();
 
   const formatTimestamp = (val) => {
     try {

@@ -7,6 +7,7 @@ import { Plus, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import DOMPurify from "dompurify";
 
 const QUILL_MODULES = {
   toolbar: [
@@ -111,7 +112,7 @@ export default function ExtractionNotes({ extraction }) {
                   </div>
                 ) : (
                   <div className="rounded-lg px-3 py-2.5 bg-muted/20 border border-border/20 hover:border-border/40 transition-colors cursor-pointer" onClick={() => { setEditingId(note.id); setEditContent(note.content); }}>
-                    <div className="note-content text-sm text-foreground/85 leading-relaxed" dangerouslySetInnerHTML={{ __html: note.content }} />
+                    <div className="note-content text-sm text-foreground/85 leading-relaxed" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(note.content) }} />
                     <div className="flex items-center justify-between mt-1.5">
                       <span className="text-[10px] text-muted-foreground/40">{format(new Date(note.created_at), "MMM d, yyyy · h:mm a")}</span>
                       <button onClick={(e) => { e.stopPropagation(); deleteMutation.mutate(note.id); }} className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground/40 hover:text-destructive">
