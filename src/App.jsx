@@ -33,6 +33,7 @@ import CanonResult from "@/pages/CanonResult";
 import CanonEvolution from "@/pages/CanonEvolution";
 import ContextBundles from "@/pages/ContextBundles";
 import BundleDetail from "@/pages/BundleDetail";
+import OAuthConsent from "@/pages/OAuthConsent";
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -61,6 +62,7 @@ const AuthenticatedApp = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/oauth/consent" element={<OAuthConsent />} />
 
       <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
         <Route element={<AppShell />}>

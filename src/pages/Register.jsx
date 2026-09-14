@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { Link } from "react-router-dom";
+import { safeReturnTo } from "@/lib/authReturnTo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -40,7 +41,7 @@ export default function Register() {
     try {
       const result = await base44.auth.verifyOtp({ email, otpCode });
       base44.auth.setToken(result.access_token);
-      window.location.href = "/";
+      window.location.href = safeReturnTo();
     } catch (err) {
       setError(err.message || "Invalid code.");
     } finally {
@@ -55,7 +56,7 @@ export default function Register() {
   };
 
   const handleGoogleLogin = () => {
-    base44.auth.loginWithProvider("google", window.location.origin + "/");
+    base44.auth.loginWithProvider("google", window.location.origin + safeReturnTo());
   };
 
   return (
