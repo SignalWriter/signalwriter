@@ -76,8 +76,8 @@ export default function Dashboard() {
         />
       ) : (
         <>
-          <SignalsMomentum extractions={extractions} penfires={penfires} />
           <RecognitionBriefCard />
+          <SignalsMomentum extractions={extractions} penfires={penfires} />
           <DashboardSignalsPreview />
         </>
       )}
