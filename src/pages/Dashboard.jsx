@@ -10,6 +10,7 @@ import PrimerModal from "@/components/onboarding/PrimerModal";
 import SignalsMomentum from "@/components/dashboard/SignalsMomentum";
 import QuickCaptureModal from "@/components/dashboard/QuickCaptureModal";
 import DashboardSignalsPreview from "@/components/signals/DashboardSignalsPreview";
+import RecognitionBriefCard from "@/components/dashboard/RecognitionBriefCard";
 
 export default function Dashboard() {
   const [showPrimer, setShowPrimer] = useState(false);
@@ -76,6 +77,7 @@ export default function Dashboard() {
       ) : (
         <>
           <SignalsMomentum extractions={extractions} penfires={penfires} />
+          <RecognitionBriefCard />
           <DashboardSignalsPreview />
         </>
       )}
