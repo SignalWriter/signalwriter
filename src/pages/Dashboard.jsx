@@ -31,9 +31,14 @@ export default function Dashboard() {
     queryFn: () => base44.entities.Extraction.filter({ status: "active" }, "-created_date", 30),
   });
 
-  const { data: penfires = [] } = useQuery({
+  const { data: penfires = [], isLoading: loadingPenfires } = useQuery({
     queryKey: ["penfires"],
     queryFn: () => base44.entities.Penfire.list("-occurrence_count", 20),
+  });
+
+  const { data: signals = [], isLoading: loadingSignals } = useQuery({
+    queryKey: ["signals", "active", "dashboard"],
+    queryFn: () => base44.entities.Signal.filter({ status: "active" }, "-last_seen", 20),
   });
 
   const isEmpty = !loadingExtractions && extractions.length === 0;
@@ -76,7 +81,12 @@ export default function Dashboard() {
         />
       ) : (
         <>
-          <RecognitionBriefCard />
+          <RecognitionBriefCard
+            signals={signals}
+            extractions={extractions}
+            penfires={penfires}
+            loading={loadingExtractions || loadingSignals || loadingPenfires}
+          />
           <SignalsMomentum extractions={extractions} penfires={penfires} />
           <DashboardSignalsPreview />
         </>
